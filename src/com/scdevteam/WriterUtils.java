@@ -94,6 +94,19 @@ public class WriterUtils {
         return YELLOW_BOLD + msg + RESET;
     }
 
+    public static void postError(String err) {
+        post("[" + buildRedBold("+") + "] " + err);
+    }
+
+    public static void postInfo(String info) {
+        post("[" + buildCyanBold("+") + "] " + info);
+    }
+
+    public static void postSuccess(String msg) {
+        post("[" + buildGreenBold("+") + "] " + msg);
+
+    }
+
     public static void post(String msg) {
         System.out.println(msg);
     }
