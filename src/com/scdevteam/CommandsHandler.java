@@ -14,11 +14,11 @@ public class CommandsHandler {
             case "help":
                 return new Help();
             case "patch":
-                if (parts.length < 2) {
-                    return new MissingParams("Usage: patch [cr - coc - bb - hh - bs]");
+                if (parts.length != 4) {
+                    return new MissingParams("Usage: patch [cr - coc - bb - hh - bs] [host] [key]");
                 }
 
-                return new Patchers(parts[1]);
+                return new Patchers(parts[1], parts[2], parts[3]);
         }
 
         return null;
