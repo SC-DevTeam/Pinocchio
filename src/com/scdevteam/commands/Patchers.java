@@ -54,7 +54,7 @@ public class Patchers extends BaseCommand {
         String result = execShellCmd("adb");
         if (result.startsWith("Android Debug Bridge")) {
             WriterUtils.postSuccess("ADB ok...");
-            result = execShellCmd("dd");
+            result = execShellCmd("dd --v");
             if (result.startsWith("dd (coreutils)")) {
                 WriterUtils.postSuccess("CoreUtils ok...");
                 WriterUtils.post("");
@@ -75,7 +75,11 @@ public class Patchers extends BaseCommand {
     private void patchCr() {
         String result = execShellCmd("adb shell su -c cp /data/data/com.supercell.clashroyale/lib/libg.so /sdcard/");
         if (result.isEmpty()) {
-            result = execShellCmd("adb pull /sdcard/libg.so");
+            execShellCmd("adb pull /sdcard/libg.so");
+            result = execShellCmd("dd if=libg.so skip=4412475 bs=1 count=23");
+
+            result = result.split("\n")[0];
+            WriterUtils.postSuccess("Current URL: " + result);
         } else {
             WriterUtils.postError("Looks like Clash Royale is not installed on your phone or not accessible.");
         }
