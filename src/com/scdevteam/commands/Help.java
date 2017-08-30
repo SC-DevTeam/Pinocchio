@@ -10,5 +10,8 @@ public class Help extends BaseCommand {
         WriterUtils.post("");
         WriterUtils.postError("Patchers");
         WriterUtils.postSuccess("patch [cr - coc - bb - hh - bs] [host] [key]");
+        WriterUtils.post("");
+        WriterUtils.postError("Proxies");
+        WriterUtils.postSuccess("proxy [cr - coc - bb - hh - bs]");
     }
 }

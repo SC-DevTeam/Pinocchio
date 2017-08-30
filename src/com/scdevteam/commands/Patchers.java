@@ -3,11 +3,6 @@ package com.scdevteam.commands;
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 public class Patchers extends BaseCommand {
 
     private final int mGame;
