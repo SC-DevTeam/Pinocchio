@@ -38,7 +38,7 @@ public class Patchers extends BaseCommand {
     @Override
     public void execute() {
         if (mGame == -1) {
-            WriterUtils.postError("Game not valid. Use [cr - coc - bb - hh - bs] [host] [key]");
+            WriterUtils.postError("Game not valid. Use [cr - coc - bb - hh - bs] [host] [key optional]");
             return;
         }
 

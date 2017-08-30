@@ -1,8 +1,6 @@
 package com.scdevteam;
 
 public class DeviceConfigs {
-    public static final String APIKEY = "MzQ0MDUxMzc0NTc0NjY1NzI4.DGn58Q.aNNmayFy4hE-qD2g-xZm5QsX2vc";
-
     public static final String DEVICE = "Android SDK built for x86";
     public static final String OS = "7.0";
     public static final String LANG = "it-IT";
