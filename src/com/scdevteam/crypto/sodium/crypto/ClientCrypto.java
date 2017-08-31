@@ -1,6 +1,7 @@
 package com.scdevteam.crypto.sodium.crypto;
 
 import com.scdevteam.Utils;
+import com.scdevteam.WriterUtils;
 import com.scdevteam.maps.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
@@ -30,10 +31,10 @@ public class ClientCrypto extends BaseCrypto {
     public void decryptPacket(ResponseMessage message) {
         switch (message.getMessageID()) {
             case MessageMap.SERVER_HELLO:
-            case MessageMap.LOGIN_FAILED:
                 int len = Utils.toInt32(Arrays.copyOfRange(message.getEncryptedPayload(), 0, 4));
                 sessionKey = Arrays.copyOfRange(message.getEncryptedPayload(),
                         4, 4 + len);
+            case MessageMap.LOGIN_FAILED:
                 message.setDecryptedPayload(message.getEncryptedPayload());
                 break;
             case MessageMap.LOGIN_OK:

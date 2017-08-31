@@ -1,8 +1,8 @@
 package com.scdevteam.crypto.sodium.crypto;
 
 import com.scdevteam.Utils;
+import com.scdevteam.WriterUtils;
 import com.scdevteam.maps.MessageMap;
-import com.scdevteam.messages.Message;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 
@@ -22,21 +22,22 @@ public class ServerCrypto extends BaseCrypto {
         } else if (message.getMessageID() == MessageMap.LOGIN) {
             ByteBuffer payloadBuffer = ByteBuffer.wrap(message.getEncryptedPayload());
 
-            this.clientKey = new byte[32];
+            clientKey = new byte[32];
             payloadBuffer.get(this.clientKey, 0, 32);
+
+            sharedKey = new byte[32];
+            TweetNaCl.crypto_box_beforenm(sharedKey, clientKey, privateKey);
 
             Nonce nonce = new Nonce(clientKey, serverKey);
 
             ByteBuffer decrypted = ByteBuffer.wrap(decrypt(payloadBuffer.array(), nonce));
 
-            if (message.getDecryptedPayload() != null) {
-                this.sessionKey = new byte[24];
-                decrypted.get(sessionKey, 0, 24);
-                byte[] decNonce = new byte[24];
-                decrypted.get(decNonce, 0, 24);
-                decryptNonce = new Nonce(decNonce);
-                message.setDecryptedPayload(decrypted.array());
-            }
+            sessionKey = new byte[24];
+            decrypted.get(sessionKey, 0, 24);
+            byte[] decNonce = new byte[24];
+            decrypted.get(decNonce, 0, 24);
+            decryptNonce = new Nonce(decNonce);
+            message.setDecryptedPayload(decrypted.array());
         } else {
             message.setDecryptedPayload(decrypt(message.getEncryptedPayload()));
         }
@@ -49,6 +50,7 @@ public class ServerCrypto extends BaseCrypto {
             message.setEncryptedPayload(message.getDecryptedPayload());
         } else if (message.getMessageID() == MessageMap.LOGIN_OK) {
             Nonce nonce = new Nonce(clientKey, serverKey, decryptNonce.getBytes());
+
             ByteBuffer byteBuffer = ByteBuffer.allocate(encryptNonce.getBytes().length +
                     sharedKey.length + message.getDecryptedPayload().length);
             byteBuffer.put(encryptNonce.getBytes());
@@ -56,7 +58,7 @@ public class ServerCrypto extends BaseCrypto {
             byteBuffer.put(message.getDecryptedPayload());
             message.setEncryptedPayload(encrypt(byteBuffer.array(), nonce));
         } else {
-            message.setEncryptedPayload(encrypt(message.getEncryptedPayload()));
+            message.setEncryptedPayload(encrypt(message.getDecryptedPayload()));
         }
     }
 }

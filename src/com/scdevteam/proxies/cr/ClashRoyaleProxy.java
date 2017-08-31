@@ -24,7 +24,7 @@ public class ClashRoyaleProxy {
 
     private ClashRoyaleClient mClient;
 
-    public ClashRoyaleProxy() {
+    public void init() {
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(9339);
@@ -70,7 +70,7 @@ public class ClashRoyaleProxy {
 
                     String map = MessageMap.getMap(responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
-                    builder.append("IN ---> ")
+                    builder.append("CLIENT ---> ")
                             .append(MessageMap.getMessageType(responseMessage.getMessageID()))
                             .append("\nLENGTH: ")
                             .append(responseMessage.getPayloadLength());
@@ -101,13 +101,10 @@ public class ClashRoyaleProxy {
     public void sendMessageToClient(final int messageId, final int version, final byte[] payload) {
         try {
             final RequestMessage requestMessage =
-                    new RequestMessage(messageId, payload.length, version, payload, mClient.getCrypto());
+                    new RequestMessage(messageId, payload.length, version, payload, mSodium);
 
             mOut.write(requestMessage.buildMessage().array());
             mOut.flush();
-            WriterUtils.postInfo("OUT ---> " +
-                    MessageMap.getMessageType(messageId) +
-                    "\nLENGTH: " + payload.length);
         } catch (IOException e) {
             e.printStackTrace();
         }

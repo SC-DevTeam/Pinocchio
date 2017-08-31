@@ -2,12 +2,10 @@ package com.scdevteam.proxies.cr;
 
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
-import com.scdevteam.crypto.sodium.crypto.BaseCrypto;
 import com.scdevteam.crypto.sodium.crypto.ClientCrypto;
 import com.scdevteam.maps.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
-import com.scdevteam.utils.cr.RequestBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +21,8 @@ public class ClashRoyaleClient implements Runnable {
 
     private final ClashRoyaleProxy mProxy;
     private final ClientCrypto mSodium;
+
+    private final Object mLocker = new Object();
 
     public ClashRoyaleClient(ClashRoyaleProxy proxy) {
         mProxy = proxy;
@@ -40,6 +40,10 @@ public class ClashRoyaleClient implements Runnable {
 
             InputStream inputStream = socket.getInputStream();
             mOut = socket.getOutputStream();
+
+            synchronized (mLocker) {
+                mLocker.notifyAll();
+            }
 
             while (socket.isConnected()) {
                 byte[] headers = new byte[7];
@@ -71,7 +75,7 @@ public class ClashRoyaleClient implements Runnable {
 
                     String map = MessageMap.getMap(responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
-                    builder.append("IN ---> ")
+                    builder.append("SERVER ---> ")
                             .append(MessageMap.getMessageType(responseMessage.getMessageID()))
                             .append("\nLENGTH: ")
                             .append(responseMessage.getPayloadLength());
@@ -100,15 +104,22 @@ public class ClashRoyaleClient implements Runnable {
     }
 
     public void sendMessageToServer(final int messageId, final int version, final byte[] payload) {
-        try {
-            final RequestMessage requestMessage =
-                    new RequestMessage(messageId, payload.length, version, payload, mProxy.getCrypto());
+        final RequestMessage requestMessage =
+                new RequestMessage(messageId, payload.length, version, payload, mSodium);
 
+        synchronized (mLocker) {
+            while (mOut == null) {
+                try {
+                    mLocker.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        try {
             mOut.write(requestMessage.buildMessage().array());
             mOut.flush();
-            WriterUtils.postInfo("OUT ---> " +
-                    MessageMap.getMessageType(messageId) +
-                    "\nLENGTH: " + payload.length);
         } catch (IOException e) {
             e.printStackTrace();
         }

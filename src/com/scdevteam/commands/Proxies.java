@@ -1,6 +1,7 @@
 package com.scdevteam.commands;
 
 import com.scdevteam.WriterUtils;
+import com.scdevteam.proxies.cr.ClashRoyaleProxy;
 
 public class Proxies extends BaseCommand {
     private final int mGame;
@@ -37,7 +38,8 @@ public class Proxies extends BaseCommand {
 
         switch (mGame) {
             case 0:
-
+                ClashRoyaleProxy clashRoyaleProxy = new ClashRoyaleProxy();
+                clashRoyaleProxy.init();
                 break;
         }
     }
