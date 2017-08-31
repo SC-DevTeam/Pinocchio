@@ -36,7 +36,7 @@ public class ClashRoyaleProxy {
             WriterUtils.postSuccess("Client connected...");
 
             mClient = new ClashRoyaleClient(this);
-            mSodium = new ServerCrypto(Utils.hexToBuffer(""));
+            mSodium = new ServerCrypto();
 
             InputStream inputStream = clientSocket.getInputStream();
 

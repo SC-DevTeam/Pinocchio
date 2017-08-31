@@ -48,7 +48,6 @@ public class ServerCrypto extends BaseCrypto {
                 message.getMessageID() == MessageMap.LOGIN_FAILED) {
             message.setEncryptedPayload(message.getDecryptedPayload());
         } else if (message.getMessageID() == MessageMap.LOGIN_OK) {
-
             Nonce nonce = new Nonce(clientKey, serverKey, decryptNonce.getBytes());
             ByteBuffer byteBuffer = ByteBuffer.allocate(encryptNonce.getBytes().length +
                     sharedKey.length + message.getDecryptedPayload().length);
