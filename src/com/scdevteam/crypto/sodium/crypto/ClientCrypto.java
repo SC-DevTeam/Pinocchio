@@ -11,8 +11,12 @@ import java.util.Arrays;
 
 public class ClientCrypto extends BaseCrypto {
 
-    public ClientCrypto(byte[] serverKey) {
+    private final ServerCrypto mServerSodium;
+
+    public ClientCrypto(byte[] serverKey, ServerCrypto serverSodium) {
         super();
+
+        mServerSodium = serverSodium;
 
         TweetNaCl.crypto_box_keypair(clientKey, privateKey, false);
         this.serverKey = serverKey;
@@ -41,6 +45,7 @@ public class ClientCrypto extends BaseCrypto {
                             0, 24));
                     sharedKey = Arrays.copyOfRange(message.getDecryptedPayload(),
                             24, 56);
+                    mServerSodium.sharedKey = sharedKey;
                     message.setDecryptedPayload(Arrays.copyOfRange(message.getDecryptedPayload(),
                             56, message.getDecryptedPayload().length));
                 }

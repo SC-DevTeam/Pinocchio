@@ -16,8 +16,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ClashRoyaleClient implements Runnable {
 
@@ -28,7 +26,9 @@ public class ClashRoyaleClient implements Runnable {
 
     public ClashRoyaleClient(ClashRoyaleProxy proxy) {
         mProxy = proxy;
-        mSodium = new ClientCrypto(Utils.hexToBuffer("ac30dcbea27e213407519bc05be8e9d930e63f873858479946c144895fa3a26b"));
+        mSodium = new ClientCrypto(Utils.hexToBuffer(
+                "ac30dcbea27e213407519bc05be8e9d930e63f873858479946c144895fa3a26b"),
+                mProxy.getCrypto());
         new Thread(this).start();
     }
 
