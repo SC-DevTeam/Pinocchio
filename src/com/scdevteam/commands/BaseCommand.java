@@ -1,7 +1,6 @@
 package com.scdevteam.commands;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public abstract class BaseCommand {
 
@@ -19,6 +18,12 @@ public abstract class BaseCommand {
 
     public abstract void execute();
 
+    /**
+     * Exec a shell cmd
+     *
+     * @param cmd the command to execute
+     * @return the std out with the result or error
+     */
     String execShellCmd(String cmd) {
         StringBuilder output = new StringBuilder();
         Process process;
@@ -40,6 +45,27 @@ public abstract class BaseCommand {
         }
 
         return output.toString();
+    }
+
+    /**
+     * Write a payload into tmp file
+     *
+     * @param payload the payload
+     * @return whether if the file has been written
+     */
+    boolean writePayload(String payload) {
+        return writePayload(payload.getBytes());
+    }
+
+    boolean writePayload(byte[] payload) {
+        try {
+            FileOutputStream fos = new FileOutputStream("tmp");
+            fos.write(payload);
+            fos.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     public boolean isRunning() {

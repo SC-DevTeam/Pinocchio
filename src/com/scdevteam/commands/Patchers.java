@@ -1,10 +1,7 @@
 package com.scdevteam.commands;
 
+import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class Patchers extends BaseCommand {
 
@@ -41,7 +38,7 @@ public class Patchers extends BaseCommand {
     @Override
     public void execute() {
         if (mGame == -1) {
-            WriterUtils.postError("Game not valid. Use [cr - coc - bb - hh - bs] [host] [key]");
+            WriterUtils.postError("Game not valid. Use [cr - coc - bb - hh - bs] [host] [key optional]");
             return;
         }
 
@@ -82,18 +79,28 @@ public class Patchers extends BaseCommand {
 
             WriterUtils.postInfo("Patching with new host: " + mHost);
 
-            try {
-                FileOutputStream fos = new FileOutputStream("tmp");
-                fos.write(mHost.getBytes());
-                fos.close();
+            boolean success = writePayload(mHost);
 
-                result = execShellCmd("dd if=tmp of=libg.so seek=4412475 obs=1 conv=notrunc");
-                WriterUtils.postInfo(result);
-
+            if (success) {
+                execShellCmd("dd if=tmp of=libg.so seek=4412475 obs=1 conv=notrunc");
                 result = execShellCmd("dd if=libg.so skip=4412475 bs=1 count=23");
                 result = result.split("\n")[0];
                 WriterUtils.postSuccess("Current host: " + result);
-            } catch (IOException e) {
+
+                WriterUtils.postInfo("Patching key...");
+
+                success = writePayload(Utils.hexToBuffer(mKey));
+                if (success) {
+                    execShellCmd("dd if=tmp of=libg.so seek=5324832 obs=1 conv=notrunc");
+
+                    // TODO:
+                    // PUSH BACK THE LIB!
+
+                    WriterUtils.postSuccess("Clash Royale patched...");
+                } else {
+                    WriterUtils.postError("Something went wrong while creating patch mods.");
+                }
+            } else {
                 WriterUtils.postError("Something went wrong while creating patch mods.");
             }
         } else {
