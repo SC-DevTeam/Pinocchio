@@ -55,7 +55,6 @@ public class ClashRoyaleClient implements Runnable {
 
                     ResponseMessage responseMessage = new ResponseMessage(msgId, len, ver);
 
-                    StringBuilder builder = new StringBuilder();
                     ByteBuffer payload = ByteBuffer.allocate(len);
 
                     int o = len;
@@ -73,24 +72,19 @@ public class ClashRoyaleClient implements Runnable {
 
                     responseMessage.finish(payload, mSodium);
 
+                    WriterUtils.postDanger("[SERVER] " +
+                            MessageMap.getMessageType(responseMessage.getMessageID()) +
+                            " (" + responseMessage.getMessageID() + ")");
+
                     String map = MessageMap.getMap(responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
-                    builder.append("SERVER ---> ")
-                            .append(MessageMap.getMessageType(responseMessage.getMessageID()))
-                            .append("\nLENGTH: ")
-                            .append(responseMessage.getPayloadLength());
-                    if (map != null) {
-                        builder.append("\n\nMAP:\n")
-                                .append(map);
-                    } else {
-                        builder.append("\n\nPAYLOAD:\n")
-                                .append(Utils.toHexString(responseMessage.getDecryptedPayload()));
-                    }
 
-                    if (builder.length() > 0) {
-                        String d = builder.toString();
-                        WriterUtils.postInfo(d);
+                    if (map != null) {
+                        WriterUtils.post(map);
+                    } else {
+                        WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
                     }
+                    WriterUtils.post("");
 
                     mProxy.sendMessageToClient(responseMessage.getMessageID(),
                             responseMessage.getVersion(), responseMessage.getDecryptedPayload());

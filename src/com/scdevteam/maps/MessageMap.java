@@ -9,6 +9,15 @@ import com.scdevteam.maps.mappers.cr.server.OwnHomeData;
 import java.nio.ByteBuffer;
 
 public class MessageMap {
+
+    private static Mapper getMap(int msgId) {
+        switch (msgId) {
+            case HOME_DATA_OWN:
+                //return new OwnHomeData();
+        }
+        return null;
+    }
+
     public static final short CLIENT_HELLO = 10100;
     public static final short LOGIN = 10101;
     public static final short CONNECTION_INFO = 10107;
@@ -368,6 +377,15 @@ public class MessageMap {
         byte[] d;
 
         switch (mapPoint.getMapValue()) {
+            case BYTE:
+                d = new byte[1];
+                clone.get(d, 0, 1);
+
+                r.append(buffParser.readInt())
+                        .append(" ")
+                        .append(Utils.toHexString(d))
+                        .append(" (BYTE)");
+                break;
             case COMPONENT:
                 if (!sub) {
                     r.append("\n");
@@ -409,6 +427,7 @@ public class MessageMap {
                         .append(" (RSSINT32)");
                 break;
             case STRING:
+                System.out.println(n);
                 r.append(buffParser.readString())
                         .append(" (STRING)");
                 break;
@@ -441,11 +460,4 @@ public class MessageMap {
         }
     }
 
-    private static Mapper getMap(int msgId) {
-        switch (msgId) {
-            case 24101:
-                return new OwnHomeData();
-        }
-        return null;
-    }
 }

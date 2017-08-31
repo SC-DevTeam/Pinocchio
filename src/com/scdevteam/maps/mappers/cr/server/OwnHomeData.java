@@ -9,11 +9,11 @@ public class OwnHomeData extends Mapper {
         return new MapPoint[] {
                 new MapPoint("Account ID", MapValueType.TAG),
                 new MapPoint("ECT Seed", MapValueType.RRSINT32),
-                new MapPoint("", MapValueType.RRSINT32),
-                new MapPoint("", MapValueType.RRSINT32),
-                new MapPoint("", MapValueType.RRSINT32),
-                new MapPoint("", MapValueType.RRSINT32),
-                new MapPoint("", MapValueType.RRSINT32),
+                new MapPoint(MapValueType.RRSINT32),
+                new MapPoint(MapValueType.RRSINT32),
+                new MapPoint(MapValueType.RRSINT32),
+                new MapPoint(MapValueType.RRSINT32),
+                new MapPoint(MapValueType.RRSINT32),
                 new MapPoint("Decks", new DeckComponent()),
         };
     }

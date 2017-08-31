@@ -2,12 +2,17 @@ package com.scdevteam.maps.mappers;
 
 public abstract class Mapper {
     public enum MapValueType {
-        COMPONENT, INT32, LONG, RRSINT32, STRING, BOOLEAN, TAG
+        COMPONENT, BYTE, INT32, LONG, RRSINT32, STRING, BOOLEAN, TAG
     }
     public class MapPoint {
         private final String mName;
         private MapValueType mMapValue;
         private Mapper mComponentMapPoint;
+
+        public MapPoint(MapValueType mapValue) {
+            mName = "";
+            mMapValue = mapValue;
+        }
 
         public MapPoint(String name, MapValueType mapValue) {
             mName = name;

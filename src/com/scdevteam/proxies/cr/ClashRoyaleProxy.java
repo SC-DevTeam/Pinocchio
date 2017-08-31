@@ -34,9 +34,10 @@ public class ClashRoyaleProxy {
             mOut = clientSocket.getOutputStream();
 
             WriterUtils.postSuccess("Client connected...");
+            WriterUtils.post("");
 
+            mSodium = new ServerCrypto(this);
             mClient = new ClashRoyaleClient(this);
-            mSodium = new ServerCrypto();
 
             InputStream inputStream = clientSocket.getInputStream();
 
@@ -50,7 +51,6 @@ public class ClashRoyaleProxy {
 
                     ResponseMessage responseMessage = new ResponseMessage(msgId, len, ver);
 
-                    StringBuilder builder = new StringBuilder();
                     ByteBuffer payload = ByteBuffer.allocate(len);
 
                     int o = len;
@@ -70,22 +70,16 @@ public class ClashRoyaleProxy {
 
                     String map = MessageMap.getMap(responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
-                    builder.append("CLIENT ---> ")
-                            .append(MessageMap.getMessageType(responseMessage.getMessageID()))
-                            .append("\nLENGTH: ")
-                            .append(responseMessage.getPayloadLength());
-                    if (map != null) {
-                        builder.append("\n\nMAP:\n")
-                                .append(map);
-                    } else {
-                        builder.append("\n\nPAYLOAD:\n")
-                                .append(Utils.toHexString(responseMessage.getDecryptedPayload()));
-                    }
 
-                    if (builder.length() > 0) {
-                        String d = builder.toString();
-                        WriterUtils.postInfo(d);
+                    WriterUtils.postAwesome("[CLIENT] " +
+                            MessageMap.getMessageType(responseMessage.getMessageID()) +
+                            " (" + responseMessage.getMessageID() + ")");
+                    if (map != null) {
+                        WriterUtils.post(map);
+                    } else {
+                        WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
                     }
+                    WriterUtils.post("");
 
                     mClient.sendMessageToServer(responseMessage.getMessageID(),
                             responseMessage.getVersion(), responseMessage.getDecryptedPayload());
@@ -112,5 +106,9 @@ public class ClashRoyaleProxy {
 
     public ServerCrypto getCrypto() {
         return mSodium;
+    }
+
+    public ClashRoyaleClient getClient() {
+        return mClient;
     }
 }

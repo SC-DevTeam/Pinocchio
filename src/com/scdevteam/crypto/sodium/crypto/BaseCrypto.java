@@ -8,8 +8,8 @@ public abstract class BaseCrypto {
     protected byte[] serverKey;
     protected byte[] clientKey = new byte[TweetNaCl.BOX_PUBLIC_KEY_BYTES];
     protected byte[] sharedKey;
-    protected Nonce decryptNonce = new Nonce();
-    protected Nonce encryptNonce = new Nonce();
+    protected Nonce decryptNonce;
+    protected Nonce encryptNonce;
     protected byte[] sessionKey;
 
     public byte[] encrypt(byte[] message) {

@@ -15,7 +15,7 @@ public class RequestBuilder {
 
     static int UNKNOWN_1 = 40;
 
-    static final String CONTENT_HASH = "622384571aafa79a8453424fb4907c5f1e4268ce";
+    static final String CONTENT_HASH = "54955624828a47165ddf06c73ba01d72a2542ce7";
 
     public static byte[] buildClientHello() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
