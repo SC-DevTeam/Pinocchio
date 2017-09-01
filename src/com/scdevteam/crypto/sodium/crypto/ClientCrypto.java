@@ -43,12 +43,15 @@ public class ClientCrypto extends BaseCrypto {
                 if (message.getDecryptedPayload() != null) {
                     decryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
                             0, 24));
+                    mServerSodium.encryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
+                            0, 24));
+
                     sharedKey = Arrays.copyOfRange(message.getDecryptedPayload(),
                             24, 56);
-                    mServerSodium.sharedKey = sharedKey;
-                    mServerSodium.encryptNonce = decryptNonce;
+
                     message.setDecryptedPayload(Arrays.copyOfRange(message.getDecryptedPayload(),
                             56, message.getDecryptedPayload().length));
+
                 }
                 break;
             default:

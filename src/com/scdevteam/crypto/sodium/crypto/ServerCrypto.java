@@ -38,7 +38,9 @@ public class ServerCrypto extends BaseCrypto {
 
             sessionKey = Arrays.copyOfRange(deciphered, 0, 24);
             decryptNonce = new Nonce(Arrays.copyOfRange(deciphered, 24, 48));
-            mProxy.getClient().getCrypto().encryptNonce = decryptNonce;
+            mProxy.getClient().getCrypto().encryptNonce = new Nonce(
+                    Arrays.copyOfRange(deciphered, 24, 48));
+
             message.setDecryptedPayload(Arrays.copyOfRange(deciphered, 48, deciphered.length));
         } else {
             message.setDecryptedPayload(decrypt(message.getEncryptedPayload()));
@@ -51,9 +53,6 @@ public class ServerCrypto extends BaseCrypto {
                 message.getMessageID() == MessageMap.LOGIN_FAILED) {
             message.setEncryptedPayload(message.getDecryptedPayload());
         } else if (message.getMessageID() == MessageMap.LOGIN_OK) {
-
-            // TODO: Something is wrong over here
-
             Nonce nonce = new Nonce(clientKey, serverKey, decryptNonce.getBytes());
 
             ByteArrayOutputStream toEncrypt = new ByteArrayOutputStream();
@@ -65,6 +64,8 @@ public class ServerCrypto extends BaseCrypto {
                 e.printStackTrace();
             }
             message.setEncryptedPayload(encrypt(toEncrypt.toByteArray(), nonce));
+
+            sharedKey = mProxy.getClient().getCrypto().sharedKey;
         } else {
             message.setEncryptedPayload(encrypt(message.getDecryptedPayload()));
         }
