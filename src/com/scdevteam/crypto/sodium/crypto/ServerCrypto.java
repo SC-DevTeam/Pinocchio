@@ -55,15 +55,17 @@ public class ServerCrypto extends BaseCrypto {
         } else if (message.getMessageID() == MessageMap.LOGIN_OK) {
             Nonce nonce = new Nonce(clientKey, serverKey, decryptNonce.getBytes());
 
-            ByteArrayOutputStream toEncrypt = new ByteArrayOutputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
             try {
-                toEncrypt.write(encryptNonce.getBytes());
-                toEncrypt.write(sharedKey);
-                toEncrypt.write(message.getDecryptedPayload());
+                bos.write(encryptNonce.getBytes());
+                bos.write(mProxy.getClient().getCrypto().sharedKey);
+                bos.write(message.getDecryptedPayload());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            message.setEncryptedPayload(encrypt(toEncrypt.toByteArray(), nonce));
+
+            byte[] ciphered = encrypt(bos.toByteArray(), nonce);
+            message.setEncryptedPayload(ciphered);
 
             sharedKey = mProxy.getClient().getCrypto().sharedKey;
         } else {
