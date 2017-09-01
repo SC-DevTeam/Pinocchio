@@ -4,7 +4,7 @@ import com.scdevteam.commands.*;
 
 public class CommandsHandler {
 
-    public static BaseCommand handleCommand(String cmd) {
+    public static BaseCommand getCommand(String cmd) {
         String[] parts = cmd.split(" ");
 
         switch (parts[0]) {

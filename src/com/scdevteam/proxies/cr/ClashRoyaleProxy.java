@@ -2,8 +2,6 @@ package com.scdevteam.proxies.cr;
 
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
-import com.scdevteam.crypto.sodium.crypto.BaseCrypto;
-import com.scdevteam.crypto.sodium.crypto.ClientCrypto;
 import com.scdevteam.crypto.sodium.crypto.ServerCrypto;
 import com.scdevteam.maps.MessageMap;
 import com.scdevteam.messages.RequestMessage;

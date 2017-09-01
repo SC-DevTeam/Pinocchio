@@ -1,18 +1,21 @@
 package com.scdevteam.commands;
 
+import com.scdevteam.Pinocchio;
+
 import java.io.*;
 
 public abstract class BaseCommand {
 
     public boolean mIsRunning = true;
 
-    public BaseCommand() {
+    public void init(Pinocchio pinocchio) {
         new Thread(() -> {
             // Execute the command sync
             execute();
 
             // Release
             mIsRunning = false;
+            pinocchio.getLocker().notifyAll();
         }).start();
     }
 
