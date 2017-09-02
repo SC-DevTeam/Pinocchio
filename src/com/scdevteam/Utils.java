@@ -1,5 +1,6 @@
 package com.scdevteam;
 
+import com.scdevteam.proto.BuffParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,7 +1,7 @@
 package com.scdevteam.crypto.sodium.crypto;
 
 import com.scdevteam.Utils;
-import com.scdevteam.maps.MessageMap;
+import com.scdevteam.proto.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 

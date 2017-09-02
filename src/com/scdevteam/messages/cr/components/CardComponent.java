@@ -1,6 +1,6 @@
-package com.scdevteam.maps.mappers.cr.components;
+package com.scdevteam.messages.cr.components;
 
-import com.scdevteam.maps.mappers.Mapper;
+import com.scdevteam.proto.Mapper;
 
 public class CardComponent extends Mapper {
     @Override

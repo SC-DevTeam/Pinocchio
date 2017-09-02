@@ -1,23 +1,11 @@
-package com.scdevteam.maps;
+package com.scdevteam.proto;
 
-import com.scdevteam.BuffParser;
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
-import com.scdevteam.maps.mappers.Mapper;
-import com.scdevteam.maps.mappers.cr.server.OwnHomeData;
 
 import java.nio.ByteBuffer;
 
 public class MessageMap {
-
-    private static Mapper getMap(int msgId) {
-        switch (msgId) {
-            case HOME_DATA_OWN:
-                //return new OwnHomeData();
-        }
-        return null;
-    }
-
     public static final short CLIENT_HELLO = 10100;
     public static final short LOGIN = 10101;
     public static final short CONNECTION_INFO = 10107;
@@ -338,8 +326,8 @@ public class MessageMap {
         }
     }
 
-    public static String getMap(int msgId, byte[] wht) {
-        Mapper map = getMap(msgId);
+    public static String getMap(GameMapper gameMapper, int msgId, byte[] wht) {
+        Mapper map = gameMapper.getMap(msgId);
         if (map != null) {
             BuffParser buffParser = new BuffParser(wht, 0);
 

@@ -1,4 +1,6 @@
-package com.scdevteam;
+package com.scdevteam.proto;
+
+import com.scdevteam.Utils;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;

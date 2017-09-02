@@ -15,7 +15,10 @@ public abstract class BaseCommand {
 
             // Release
             mIsRunning = false;
-            pinocchio.getLocker().notifyAll();
+
+            synchronized (pinocchio.getLocker()) {
+                pinocchio.getLocker().notifyAll();
+            }
         }).start();
     }
 

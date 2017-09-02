@@ -1,4 +1,4 @@
-package com.scdevteam.maps.mappers;
+package com.scdevteam.proto;
 
 public abstract class Mapper {
     public enum MapValueType {

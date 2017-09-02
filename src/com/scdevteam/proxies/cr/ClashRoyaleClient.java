@@ -3,7 +3,7 @@ package com.scdevteam.proxies.cr;
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
 import com.scdevteam.crypto.sodium.crypto.ClientCrypto;
-import com.scdevteam.maps.MessageMap;
+import com.scdevteam.proto.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 
@@ -76,7 +76,8 @@ public class ClashRoyaleClient implements Runnable {
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
 
-                    String map = MessageMap.getMap(responseMessage.getMessageID(),
+                    String map = MessageMap.getMap(mProxy.getMapper(),
+                            responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
                     if (map != null) {

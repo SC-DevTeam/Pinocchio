@@ -1,7 +1,7 @@
-package com.scdevteam.maps.mappers.cr.server;
+package com.scdevteam.messages.cr.server;
 
-import com.scdevteam.maps.mappers.Mapper;
-import com.scdevteam.maps.mappers.cr.components.DeckComponent;
+import com.scdevteam.proto.Mapper;
+import com.scdevteam.messages.cr.components.DeckComponent;
 
 public class OwnHomeData extends Mapper {
     @Override

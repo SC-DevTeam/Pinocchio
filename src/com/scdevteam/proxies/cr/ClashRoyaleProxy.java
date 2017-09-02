@@ -3,7 +3,8 @@ package com.scdevteam.proxies.cr;
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
 import com.scdevteam.crypto.sodium.crypto.ServerCrypto;
-import com.scdevteam.maps.MessageMap;
+import com.scdevteam.messages.cr.CRMapper;
+import com.scdevteam.proto.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 
@@ -21,6 +22,7 @@ public class ClashRoyaleProxy {
     private ServerCrypto mSodium;
 
     private ClashRoyaleClient mClient;
+    private CRMapper mMapper;
 
     public void init() {
         ServerSocket serverSocket;
@@ -34,6 +36,7 @@ public class ClashRoyaleProxy {
             WriterUtils.postSuccess("Client connected...");
             WriterUtils.post("");
 
+            mMapper = new CRMapper();
             mSodium = new ServerCrypto(this);
             mClient = new ClashRoyaleClient(this);
 
@@ -66,7 +69,7 @@ public class ClashRoyaleProxy {
 
                     responseMessage.finish(payload, mSodium);
 
-                    String map = MessageMap.getMap(responseMessage.getMessageID(),
+                    String map = MessageMap.getMap(mMapper, responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
                     WriterUtils.postAwesome("[CLIENT] " +
@@ -108,5 +111,9 @@ public class ClashRoyaleProxy {
 
     public ClashRoyaleClient getClient() {
         return mClient;
+    }
+
+    public CRMapper getMapper() {
+        return mMapper;
     }
 }
