@@ -61,6 +61,9 @@ public class Patchers extends BaseCommand {
                     case 1:
                         patchCoc();
                         break;
+                    case 2:
+                        patchBB();
+                        break;
                     default:
                         WriterUtils.postError("This game is currently not supported by the patcher");
                         break;
@@ -148,6 +151,39 @@ public class Patchers extends BaseCommand {
         }
     }
 
+    private void patchBB() {
+        String gameName = "Boom Beach";
+        String gamePackage = "com.supercell.boombeach";
+        int hostLength = 22;
+
+        if (mHost.length() != hostLength) {
+            WriterUtils.postError("Host must be " + hostLength + " character length");
+            return;
+        }
+
+        if (pullLib(gamePackage, gameName)) {
+            String result = ddExtract(5865650, hostLength);
+            result = result.split("\n")[0];
+            WriterUtils.postSuccess("Current host: " + result);
+
+            WriterUtils.postInfo("Patching with new host: " + mHost);
+
+            boolean success = writePayload(mHost);
+
+            if (success) {
+                ddPatch(5865650);
+
+                WriterUtils.postInfo("Patching magic key...");
+                success = writePayload(Utils.hexToBuffer("18"));
+                if (success) {
+                    ddPatch(5274540);
+                    ddPatch(5271652);
+                }
+
+                finalizePatch(gameName, gamePackage);
+            }
+        }
+    }
     private boolean pullLib(String gamePackageName, String gameName) {
         String result = execShellCmd("adb shell su -c cp /data/data/" + gamePackageName + "/lib/libg.so /sdcard/");
         if (result.isEmpty()) {
