@@ -68,6 +68,11 @@ public class Patchers extends BaseCommand {
     }
 
     private void patchCr() {
+        if (mHost.length() != 23) {
+            WriterUtils.postError("Host must be 23 character length");
+            return;
+        }
+
         String result = execShellCmd("adb shell su -c cp /data/data/com.supercell.clashroyale/lib/libg.so /sdcard/");
         if (result.isEmpty()) {
             WriterUtils.postSuccess("Clash Royale found. Pulling libg...");
