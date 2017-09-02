@@ -28,34 +28,30 @@ public class ClientCrypto extends BaseCrypto {
 
     @Override
     public void decryptPacket(ResponseMessage message) {
-        switch (message.getMessageID()) {
-            case MessageMap.SERVER_HELLO:
-            case MessageMap.LOGIN_FAILED:
-                int len = Utils.toInt32(Arrays.copyOfRange(message.getEncryptedPayload(), 0, 4));
-                sessionKey = Arrays.copyOfRange(message.getEncryptedPayload(),
-                        4, 4 + len);
-                message.setDecryptedPayload(message.getEncryptedPayload());
-                break;
-            case MessageMap.LOGIN_OK:
-                Nonce nonce = new Nonce(clientKey, serverKey, encryptNonce.getBytes());
-                message.setDecryptedPayload(decrypt(message.getEncryptedPayload(), nonce));
+        if (message.getMessageID() == MessageMap.SERVER_HELLO ||
+                (message.getMessageID() == MessageMap.LOGIN_FAILED && sessionKey == null)) {
+            int len = Utils.toInt32(Arrays.copyOfRange(message.getEncryptedPayload(), 0, 4));
+            sessionKey = Arrays.copyOfRange(message.getEncryptedPayload(),
+                    4, 4 + len);
+            message.setDecryptedPayload(message.getEncryptedPayload());
+        } else if (message.getMessageID() == MessageMap.LOGIN_OK) {
+            Nonce nonce = new Nonce(clientKey, serverKey, encryptNonce.getBytes());
+            message.setDecryptedPayload(decrypt(message.getEncryptedPayload(), nonce));
 
-                if (message.getDecryptedPayload() != null) {
-                    decryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
-                            0, 24));
-                    mServerSodium.encryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
-                            0, 24));
+            if (message.getDecryptedPayload() != null) {
+                decryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
+                        0, 24));
+                mServerSodium.encryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
+                        0, 24));
 
-                    sharedKey = Arrays.copyOfRange(message.getDecryptedPayload(),
-                            24, 56);
+                sharedKey = Arrays.copyOfRange(message.getDecryptedPayload(),
+                        24, 56);
 
-                    message.setDecryptedPayload(Arrays.copyOfRange(message.getDecryptedPayload(),
-                            56, message.getDecryptedPayload().length));
-
-                }
-                break;
-            default:
+                message.setDecryptedPayload(Arrays.copyOfRange(message.getDecryptedPayload(),
+                        56, message.getDecryptedPayload().length));
+            } else {
                 message.setDecryptedPayload(decrypt(message.getEncryptedPayload()));
+            }
         }
     }
 

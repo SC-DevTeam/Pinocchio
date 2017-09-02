@@ -108,6 +108,14 @@ public abstract class BaseProxy extends Base {
         return mSodium;
     }
 
+    public GameMapper getMapper() {
+        return mMapper;
+    }
+
+    public BaseClient getClient() {
+        return mClient;
+    }
+
     public abstract BaseClient buildClient();
 
     public abstract GameMapper buildMapper();

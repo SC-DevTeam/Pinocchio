@@ -14,11 +14,17 @@ import java.util.Arrays;
 public class ServerCrypto extends BaseCrypto {
     private final BaseProxy mProxy;
 
-    public ServerCrypto(BaseProxy proxy) {
+    public ServerCrypto(BaseProxy proxy, String magicKey) {
         mProxy = proxy;
 
-        privateKey = Utils.hexToBuffer("1891d401fadb51d25d3a9174d472a9f691a45b974285d47729c45c6538070d85");
-        serverKey = Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e");
+        if (magicKey != null) {
+            this.magicKey = Utils.hexToBuffer(magicKey);
+        } else {
+            privateKey = Utils.hexToBuffer("1891d401fadb51d25d3a9174d472a9f691a45b974285d47729c45c6538070d85");
+            serverKey = Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e");
+
+            realPublicServerKey = Utils.hexToBuffer(mProxy.getClient().getKey());
+        }
     }
 
     @Override
@@ -28,8 +34,12 @@ public class ServerCrypto extends BaseCrypto {
         } else if (message.getMessageID() == MessageMap.LOGIN) {
             clientKey = Arrays.copyOf(message.getEncryptedPayload(), 32);
 
-            sharedKey = new byte[32];
-            TweetNaCl.crypto_box_beforenm(sharedKey, clientKey, privateKey);
+            if (magicKey != null) {
+                sharedKey = magicKey;
+            } else {
+                sharedKey = new byte[32];
+                TweetNaCl.crypto_box_beforenm(sharedKey, clientKey, privateKey);
+            }
 
             Nonce nonce = new Nonce(clientKey, serverKey);
 
@@ -59,16 +69,26 @@ public class ServerCrypto extends BaseCrypto {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             try {
                 bos.write(encryptNonce.getBytes());
-                bos.write(mProxy.getClient().getCrypto().sharedKey);
+                if (magicKey != null) {
+                    bos.write(magicKey);
+                } else {
+                    bos.write(mProxy.getClient().getCrypto().sharedKey);
+                }
                 bos.write(message.getDecryptedPayload());
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            if (magicKey != null) {
+                sharedKey = magicKey;
+            }
+
             byte[] ciphered = encrypt(bos.toByteArray(), nonce);
             message.setEncryptedPayload(ciphered);
 
-            sharedKey = mProxy.getClient().getCrypto().sharedKey;
+            if (magicKey == null) {
+                sharedKey = mProxy.getClient().getCrypto().sharedKey;
+            }
         } else {
             message.setEncryptedPayload(encrypt(message.getDecryptedPayload()));
         }

@@ -4,19 +4,23 @@ import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 
 public abstract class BaseCrypto {
-    protected byte[] privateKey = new byte[TweetNaCl.SIGN_SECRET_KEY_BYTES];
-    protected byte[] serverKey;
-    protected byte[] clientKey = new byte[TweetNaCl.BOX_PUBLIC_KEY_BYTES];
-    protected byte[] sharedKey;
-    protected Nonce decryptNonce;
-    protected Nonce encryptNonce;
-    protected byte[] sessionKey;
+    byte[] privateKey = new byte[TweetNaCl.SIGN_SECRET_KEY_BYTES];
+    byte[] serverKey;
+    byte[] clientKey = new byte[TweetNaCl.BOX_PUBLIC_KEY_BYTES];
+    byte[] sharedKey;
+    Nonce decryptNonce;
+    Nonce encryptNonce;
+    byte[] sessionKey;
 
-    public byte[] encrypt(byte[] message) {
+    // For new encryption
+    byte[] realPublicServerKey;
+    byte[] magicKey;
+
+    byte[] encrypt(byte[] message) {
         return encrypt(message, null);
     }
 
-    public byte[] encrypt(byte[] message, Nonce nonce) {
+    byte[] encrypt(byte[] message, Nonce nonce) {
         if (nonce == null) {
             encryptNonce.increment();
             nonce = encryptNonce;
@@ -25,11 +29,11 @@ public abstract class BaseCrypto {
         return TweetNaCl.crypto_box(message, nonce.getBytes(), sharedKey);
     }
 
-    public byte[] decrypt(byte[] message) {
+    byte[] decrypt(byte[] message) {
         return decrypt(message, null);
     }
 
-    public byte[] decrypt(byte[] message, Nonce nonce) {
+    byte[] decrypt(byte[] message, Nonce nonce) {
         if (nonce == null) {
             decryptNonce.increment();
             nonce = decryptNonce;
