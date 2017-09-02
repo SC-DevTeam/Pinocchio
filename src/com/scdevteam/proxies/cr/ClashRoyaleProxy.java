@@ -16,4 +16,9 @@ public class ClashRoyaleProxy extends BaseProxy {
     public GameMapper buildMapper() {
         return new CRMapper();
     }
+
+    @Override
+    public String getMagicKey() {
+        return null;
+    }
 }

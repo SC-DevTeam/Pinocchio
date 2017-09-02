@@ -36,7 +36,7 @@ public abstract class BaseProxy extends Base {
             WriterUtils.post("");
 
             mMapper = buildMapper();
-            mSodium = new ServerCrypto(this);
+            mSodium = new ServerCrypto(this, getMagicKey());
             mClient = buildClient();
 
             InputStream inputStream = clientSocket.getInputStream();
@@ -119,4 +119,6 @@ public abstract class BaseProxy extends Base {
     public abstract BaseClient buildClient();
 
     public abstract GameMapper buildMapper();
+
+    public abstract String getMagicKey();
 }

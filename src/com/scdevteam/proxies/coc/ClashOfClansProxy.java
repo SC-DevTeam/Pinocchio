@@ -16,4 +16,9 @@ public class ClashOfClansProxy extends BaseProxy {
     public GameMapper buildMapper() {
         return new COCMapper();
     }
+
+    @Override
+    public String getMagicKey() {
+        return "56b577a8996f52c388981942811c6e9b8d39dc3e281f1ce0c047a3d8e55cb222";
+    }
 }
