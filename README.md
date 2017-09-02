@@ -32,4 +32,4 @@ Patchers. Actually only patch cr and coc would work. Extract libg from android d
 
 * proxy [cr - coc - bb - hh - bs]
 
-Proxies. Actually only proxy cr would work. 
+Proxies. Actually only proxy cr and coc would work. 
