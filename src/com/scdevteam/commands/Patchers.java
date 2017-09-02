@@ -161,9 +161,12 @@ public class Patchers extends BaseCommand {
     }
 
     private void finalizePatch(String gameName, String gamePackage) {
+        WriterUtils.postSuccess(gameName + " patched...");
+
+        WriterUtils.postSuccess("Uploading patched libg...");
         execShellCmd("adb push libg.so /sdcard/");
         execShellCmd("adb shell su -c cp /sdcard/libg.so /data/data/" + gamePackage + "/lib/");
 
-        WriterUtils.postSuccess(gameName + " patched...");
+        WriterUtils.postAwesome(gameName + " ready for Pinocchio proxy.");
     }
 }

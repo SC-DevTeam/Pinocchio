@@ -41,6 +41,11 @@ public class Proxies extends BaseCommand {
                 ClashRoyaleProxy clashRoyaleProxy = new ClashRoyaleProxy();
                 clashRoyaleProxy.init();
                 break;
+            case 1:
+                break;
+            default:
+                WriterUtils.postError("This game is currently not supported by Pinocchio.");
+                break;
         }
     }
 }

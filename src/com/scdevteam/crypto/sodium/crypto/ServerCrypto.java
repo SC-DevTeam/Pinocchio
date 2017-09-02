@@ -4,6 +4,7 @@ import com.scdevteam.Utils;
 import com.scdevteam.proto.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
+import com.scdevteam.proxies.BaseProxy;
 import com.scdevteam.proxies.cr.ClashRoyaleProxy;
 
 import java.io.ByteArrayOutputStream;
@@ -11,9 +12,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ServerCrypto extends BaseCrypto {
-    private final ClashRoyaleProxy mProxy;
+    private final BaseProxy mProxy;
 
-    public ServerCrypto(ClashRoyaleProxy proxy) {
+    public ServerCrypto(BaseProxy proxy) {
         mProxy = proxy;
 
         privateKey = Utils.hexToBuffer("1891d401fadb51d25d3a9174d472a9f691a45b974285d47729c45c6538070d85");
