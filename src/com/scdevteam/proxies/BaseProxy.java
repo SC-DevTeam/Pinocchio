@@ -23,14 +23,16 @@ public abstract class BaseProxy extends Base {
     private BaseClient mClient;
     private GameMapper mMapper;
 
+    private Socket mClientSocket;
+
     public void init() {
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(9339);
             WriterUtils.postInfo("Waiting for game to connect");
-            Socket clientSocket = serverSocket.accept();
+            mClientSocket = serverSocket.accept();
 
-            mOut = clientSocket.getOutputStream();
+            mOut = mClientSocket.getOutputStream();
 
             WriterUtils.postSuccess("Client connected...");
             WriterUtils.post("");
@@ -39,9 +41,9 @@ public abstract class BaseProxy extends Base {
             mSodium = new ServerCrypto(this, getMagicKey());
             mClient = buildClient();
 
-            InputStream inputStream = clientSocket.getInputStream();
+            InputStream inputStream = mClientSocket.getInputStream();
 
-            while (clientSocket.isConnected()) {
+            while (mClientSocket.isConnected()) {
                 byte[] headers = new byte[7];
 
                 if (inputStream.read(headers, 0, 7) > 0) {
@@ -86,8 +88,10 @@ public abstract class BaseProxy extends Base {
                 }
             }
 
+            mClient.dispose();
             WriterUtils.postError("Game disconnected.");
         } catch (IOException e) {
+            mClient.dispose();
             WriterUtils.postError("Game disconnected.");
         }
     }
@@ -100,7 +104,7 @@ public abstract class BaseProxy extends Base {
             mOut.write(requestMessage.buildMessage().array());
             mOut.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            mClient.dispose();
         }
     }
 
@@ -121,4 +125,11 @@ public abstract class BaseProxy extends Base {
     public abstract GameMapper buildMapper();
 
     public abstract String getMagicKey();
+
+    void dispose() {
+        try {
+            mClientSocket.close();
+        } catch (Exception ignored) {
+        }
+    }
 }

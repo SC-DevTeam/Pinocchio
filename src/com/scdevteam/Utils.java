@@ -67,6 +67,10 @@ public class Utils {
     }
 
     public static String toHexString(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return "";
+        }
+
         char[] hexChars = new char[bytes.length*2];
         int v;
 

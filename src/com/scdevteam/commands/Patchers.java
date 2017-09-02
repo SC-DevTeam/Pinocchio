@@ -133,7 +133,7 @@ public class Patchers extends BaseCommand {
 
                 success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
                 if (success) {
-                    ddPatch(5759024);
+                    ddPatch(5754928);
 
                     WriterUtils.postInfo("Patching magic key...");
                     success = writePayload(Utils.hexToBuffer("14"));

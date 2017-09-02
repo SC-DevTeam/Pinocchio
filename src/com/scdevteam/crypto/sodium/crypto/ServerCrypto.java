@@ -5,7 +5,6 @@ import com.scdevteam.proto.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 import com.scdevteam.proxies.BaseProxy;
-import com.scdevteam.proxies.cr.ClashRoyaleProxy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,14 +21,16 @@ public class ServerCrypto extends BaseCrypto {
         } else {
             privateKey = Utils.hexToBuffer("1891d401fadb51d25d3a9174d472a9f691a45b974285d47729c45c6538070d85");
             serverKey = Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e");
-
-            realPublicServerKey = Utils.hexToBuffer(mProxy.getClient().getKey());
         }
     }
 
     @Override
     public void decryptPacket(ResponseMessage message) {
         if (message.getMessageID() == MessageMap.CLIENT_HELLO) {
+            if (magicKey != null) {
+                serverKey = Utils.hexToBuffer(mProxy.getClient().getKey());
+            }
+
             message.setDecryptedPayload(message.getEncryptedPayload());
         } else if (message.getMessageID() == MessageMap.LOGIN) {
             clientKey = Arrays.copyOf(message.getEncryptedPayload(), 32);
@@ -64,7 +65,9 @@ public class ServerCrypto extends BaseCrypto {
                 message.getMessageID() == MessageMap.LOGIN_FAILED) {
             message.setEncryptedPayload(message.getDecryptedPayload());
         } else if (message.getMessageID() == MessageMap.LOGIN_OK) {
-            Nonce nonce = new Nonce(clientKey, serverKey, decryptNonce.getBytes());
+            Nonce nonce;
+
+            nonce = new Nonce(clientKey, serverKey, decryptNonce.getBytes());
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             try {

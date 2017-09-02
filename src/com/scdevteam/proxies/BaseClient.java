@@ -25,6 +25,8 @@ public abstract class BaseClient implements Runnable {
 
     private final Object mLocker = new Object();
 
+    private Socket mGameSocket;
+
     public BaseClient(BaseProxy proxy) {
         mProxy = proxy;
         mSodium = new ClientCrypto(Utils.hexToBuffer(getKey()), mProxy.getCrypto());
@@ -34,17 +36,17 @@ public abstract class BaseClient implements Runnable {
     @Override
     public void run() {
         try {
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(getGameHost(), 9339));
+            mGameSocket = new Socket();
+            mGameSocket.connect(new InetSocketAddress(getGameHost(), 9339));
 
-            InputStream inputStream = socket.getInputStream();
-            mOut = socket.getOutputStream();
+            InputStream inputStream = mGameSocket.getInputStream();
+            mOut = mGameSocket.getOutputStream();
 
             synchronized (mLocker) {
                 mLocker.notifyAll();
             }
 
-            while (socket.isConnected()) {
+            while (mGameSocket.isConnected()) {
                 byte[] headers = new byte[7];
 
                 if (inputStream.read(headers, 0, 7) > 0) {
@@ -75,6 +77,10 @@ public abstract class BaseClient implements Runnable {
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
 
+                    if (responseMessage.getDecryptedPayload() == null) {
+                        responseMessage.setDecryptedPayload(new byte[0]);
+                    }
+
                     String map = MessageMap.getMap(mProxy.getMapper(),
                             responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
@@ -91,8 +97,10 @@ public abstract class BaseClient implements Runnable {
                 }
             }
 
+            mProxy.dispose();
             WriterUtils.postError("Game server disconnected");
         } catch (IOException ignored) {
+            mProxy.dispose();
             WriterUtils.postError("Game server disconnected");
         }
     }
@@ -114,8 +122,15 @@ public abstract class BaseClient implements Runnable {
         try {
             mOut.write(requestMessage.buildMessage().array());
             mOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
+            mProxy.dispose();
+        }
+    }
+
+    void dispose() {
+        try {
+            mGameSocket.close();
+        } catch (Exception ignored) {
         }
     }
 

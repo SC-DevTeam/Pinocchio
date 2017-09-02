@@ -13,7 +13,6 @@ public abstract class BaseCrypto {
     byte[] sessionKey;
 
     // For new encryption
-    byte[] realPublicServerKey;
     byte[] magicKey;
 
     byte[] encrypt(byte[] message) {

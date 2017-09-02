@@ -2,7 +2,6 @@ package com.scdevteam.proxies.cr;
 
 import com.scdevteam.proxies.BaseClient;
 
-//
 public class ClashRoyaleClient extends BaseClient {
 
     public ClashRoyaleClient(ClashRoyaleProxy proxy) {
