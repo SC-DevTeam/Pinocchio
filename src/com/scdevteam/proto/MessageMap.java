@@ -340,8 +340,9 @@ public class MessageMap {
 
             if (buffParser.hasRemaining()) {
                 byte[] rem = buffParser.remaining();
-                WriterUtils.postInfo("REMAININGS:\n" + new String(rem));
-                WriterUtils.postInfo("REMAININGS HEX:\n" + Utils.toHexString(rem));
+
+                //WriterUtils.post("");
+                //WriterUtils.postInfo("REMAININGS HEX:\n" + Utils.hexDump(rem));
             }
             return r.toString();
         }
@@ -353,9 +354,9 @@ public class MessageMap {
                                          BuffParser buffParser, int i, boolean sub) {
         String n = mapPoint.getName(i);
         if (mapPoint.getMapValue() != Mapper.MapValueType.COMPONENT) {
-            r.append(n).append("\n");
+            r.append(WriterUtils.buildGreenBold(n)).append("\n");
         } else {
-            r.append(n)
+            r.append(WriterUtils.buildGreenBold(n))
                     .append(" ")
                     .append(i)
                     .append("\n");
@@ -371,8 +372,8 @@ public class MessageMap {
 
                 r.append(buffParser.readInt())
                         .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (BYTE)");
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                        .append(WriterUtils.buildCyanBold(" (BYTE)"));
                 break;
             case COMPONENT:
                 if (!sub) {
@@ -390,18 +391,19 @@ public class MessageMap {
 
                 r.append(buffParser.readInt())
                         .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (INT)");
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                        .append(WriterUtils.buildCyanBold(" (INT)"));
                 break;
             case LONG:
                 d = new byte[8];
                 clone.get(d, 0, 8);
-                r.append(buffParser.readLong().hi)
+                BuffParser.SLong sLong = buffParser.readLong();
+                r.append(sLong.hi)
                         .append(" ")
-                        .append(buffParser.readLong().lo)
+                        .append(sLong.lo)
                         .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (LONG)");
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                        .append(WriterUtils.buildCyanBold(" (LONG)"));
                 break;
             case RRSINT32:
                 BuffParser.RrsInt rrsInt = buffParser.readRssInt32();
@@ -411,21 +413,23 @@ public class MessageMap {
 
                 r.append(rrsInt.val)
                         .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (RSSINT32)");
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                        .append(WriterUtils.buildCyanBold(" (RRSINT32)"));
                 break;
             case STRING:
-                System.out.println(n);
-                r.append(buffParser.readString())
-                        .append(" (STRING)");
+                BuffParser.SString sString = buffParser.readString();
+                r.append(sString.s)
+                        .append(" ")
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(sString.toBuff())))
+                        .append(WriterUtils.buildCyanBold(" (STRING)"));
                 break;
             case BOOLEAN:
                 d = new byte[1];
                 clone.get(d, 0, 1);
                 r.append(buffParser.readBoolean())
                         .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (BOOLEAN)");
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                        .append(WriterUtils.buildCyanBold(" (BOOLEAN)"));
                 break;
             case TAG:
                 d = new byte[8];
@@ -439,8 +443,8 @@ public class MessageMap {
                         .append(" ")
                         .append(Utils.tagFromId(l))
                         .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (TAG)");
+                        .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                        .append(WriterUtils.buildCyanBold(" (TAG)"));
 
         }
         if (mapPoint.getMapValue() != Mapper.MapValueType.COMPONENT) {

@@ -80,10 +80,10 @@ public class ClashRoyaleClient implements Runnable {
                             responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
+                    WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
+
                     if (map != null) {
                         WriterUtils.post(map);
-                    } else {
-                        WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
                     }
                     WriterUtils.post("");
 

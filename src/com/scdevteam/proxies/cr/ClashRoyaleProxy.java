@@ -75,10 +75,10 @@ public class ClashRoyaleProxy {
                     WriterUtils.postAwesome("[CLIENT] " +
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
+                    WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
+
                     if (map != null) {
                         WriterUtils.post(map);
-                    } else {
-                        WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
                     }
                     WriterUtils.post("");
 
