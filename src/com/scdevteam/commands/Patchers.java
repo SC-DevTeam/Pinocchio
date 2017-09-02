@@ -93,8 +93,8 @@ public class Patchers extends BaseCommand {
                 if (success) {
                     execShellCmd("dd if=tmp of=libg.so seek=5324832 obs=1 conv=notrunc");
 
-                    // TODO:
-                    // PUSH BACK THE LIB!
+                    execShellCmd("adb push libg.so /sdcard/");
+                    execShellCmd("adb shell su -c cp /sdcard/libg.so /data/data/com.supercell.clashroyale/lib/");
 
                     WriterUtils.postSuccess("Clash Royale patched...");
                 } else {
