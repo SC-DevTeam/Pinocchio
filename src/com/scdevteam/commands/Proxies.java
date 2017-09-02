@@ -1,6 +1,7 @@
 package com.scdevteam.commands;
 
 import com.scdevteam.WriterUtils;
+import com.scdevteam.proxies.coc.ClashOfClansProxy;
 import com.scdevteam.proxies.cr.ClashRoyaleProxy;
 
 public class Proxies extends BaseCommand {
@@ -42,6 +43,8 @@ public class Proxies extends BaseCommand {
                 clashRoyaleProxy.init();
                 break;
             case 1:
+                ClashOfClansProxy clashOfClansProxy = new ClashOfClansProxy();
+                clashOfClansProxy.init();
                 break;
             default:
                 WriterUtils.postError("This game is currently not supported by Pinocchio.");

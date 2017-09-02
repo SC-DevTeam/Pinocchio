@@ -127,7 +127,7 @@ public class Patchers extends BaseCommand {
             boolean success = writePayload(mHost);
 
             if (success) {
-                ddPatch(4412475);
+                ddPatch(4828203);
 
                 WriterUtils.postInfo("Patching server key...");
 
