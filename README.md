@@ -9,8 +9,10 @@ Pinocchio is actually a big WIP project. It's built with vanilla java, with all 
 
 * Clash Royale patcher
 * Clash of Clans patcher
+* Boom Beach patcher
 * Clash Royale proxy
 * Clash of Clans proxy
+* Boom Beach proxy
 * Protocol definitions and parser
 
 # TODO
@@ -28,8 +30,8 @@ Show help
 
 * patch [cr - coc - bb - hh - bs] [host] [key optional]
 
-Patchers. Actually only patch cr and coc would work. Extract libg from android device through adb, patch it (ONLY ARM) and upload it back.
+Patchers. HayDay and BrawlStars are TODO. Extract libg from android device through adb, patch it (ONLY ARM) and upload it back.
 
 * proxy [cr - coc - bb - hh - bs]
 
-Proxies. Actually only proxy cr and coc would work. 
+Proxies. HayDay and BrawlStars are TODO. 
