@@ -8,12 +8,15 @@ Pinocchio is actually a big WIP project. It's built with vanilla java, with all 
 # What's working:
 
 * Clash Royale patcher
+* Clash of Clans patcher
 * Clash Royale proxy
+* Clash of Clans proxy
 * Protocol definitions and parser
 
 # TODO
-* Make proxy and patcher abstract for all the games
 * Port all the messages from the know ones to Pinocchio java mapper
+* Make proxy and patchers for bb and hh
+* Make utils to rebuild messages
 
 # How to start
 ```java -jar Pinocchio.jar```
@@ -25,7 +28,7 @@ Show help
 
 * patch [cr - coc - bb - hh - bs] [host] [key optional]
 
-Patchers. Actually only patch cr would work. Extract libg from android device through adb, patch it and upload it back.
+Patchers. Actually only patch cr and coc would work. Extract libg from android device through adb, patch it (ONLY ARM) and upload it back.
 
 * proxy [cr - coc - bb - hh - bs]
 
