@@ -26,3 +26,7 @@ Show help
 * patch [cr - coc - bb - hh - bs] [host] [key optional]
 
 Patchers. Actually only patch cr would work. Extract libg from android device through adb, patch it and upload it back.
+
+* proxy [cr - coc - bb - hh - bs]
+
+Proxies. Actually only proxy cr would work. 
