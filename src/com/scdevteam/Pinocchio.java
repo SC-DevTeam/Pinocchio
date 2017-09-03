@@ -66,7 +66,7 @@ public class Pinocchio {
         }
     }
 
-    public static void writeMarker() {
+    private static void writeMarker() {
         System.out.print(WriterUtils.RED_BOLD + "$> " + WriterUtils.RESET);
     }
 
