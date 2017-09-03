@@ -16,4 +16,7 @@ public class ClashOfClansClient extends BaseClient  {
     public String getGameHost() {
         return "gamea.clashofclans.com";
     }
+
+    @Override
+    public String getStageGameHost() { return "stage.clashofclans.com"; }
 }

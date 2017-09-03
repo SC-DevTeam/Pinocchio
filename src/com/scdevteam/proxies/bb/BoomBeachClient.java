@@ -16,4 +16,7 @@ public class BoomBeachClient extends BaseClient {
     public String getGameHost() {
         return "game.boombeachgame.com";
     }
+
+    @Override
+    public String getStageGameHost() { return "stage.reef.supercelltest.com"; }
 }

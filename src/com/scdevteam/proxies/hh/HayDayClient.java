@@ -17,4 +17,7 @@ public class HayDayClient extends BaseClient {
     public String getGameHost() {
         return "game.haydaygame.com";
     }
+
+    @Override
+    public String getStageGameHost() { return "stage-soil.haydaygame.com"; }
 }
