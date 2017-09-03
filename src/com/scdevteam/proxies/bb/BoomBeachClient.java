@@ -1,5 +1,6 @@
 package com.scdevteam.proxies.bb;
 
+import com.scdevteam.proto.HostsMap;
 import com.scdevteam.proxies.BaseClient;
 
 public class BoomBeachClient extends BaseClient {
@@ -14,9 +15,9 @@ public class BoomBeachClient extends BaseClient {
 
     @Override
     public String getGameHost() {
-        return "game.boombeachgame.com";
+        return HostsMap.PROD_BOOM_BEACH;
     }
 
     @Override
-    public String getStageGameHost() { return "stage.reef.supercelltest.com"; }
+    public String getStageGameHost() { return HostsMap.STAGE_BOOM_BEACH; }
 }

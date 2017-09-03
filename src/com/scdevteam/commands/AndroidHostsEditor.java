@@ -1,19 +1,24 @@
 package com.scdevteam.commands;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+
 public class AndroidHostsEditor extends BaseCommand {
 
+    private final LinkedHashMap<String, String> mChanges = new LinkedHashMap<>();
+
     public AndroidHostsEditor add(String ip, String dns) {
-        // Do shits
+        mChanges.put(dns, ip);
         return this;
     }
 
     public AndroidHostsEditor remove(String dns) {
-        // Do shits
+        mChanges.put(dns, dns);
         return this;
     }
 
     public AndroidHostsEditor scHosts() {
-        // Do shits
+
         return this;
     }
 

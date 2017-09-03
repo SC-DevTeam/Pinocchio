@@ -1,5 +1,6 @@
 package com.scdevteam.proxies.hh;
 
+import com.scdevteam.proto.HostsMap;
 import com.scdevteam.proxies.BaseClient;
 
 public class HayDayClient extends BaseClient {
@@ -15,9 +16,9 @@ public class HayDayClient extends BaseClient {
 
     @Override
     public String getGameHost() {
-        return "game.haydaygame.com";
+        return HostsMap.PROD_HAY_DAY;
     }
 
     @Override
-    public String getStageGameHost() { return "stage-soil.haydaygame.com"; }
+    public String getStageGameHost() { return HostsMap.STAGE_HAY_DAY; }
 }

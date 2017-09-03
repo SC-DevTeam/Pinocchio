@@ -1,5 +1,6 @@
 package com.scdevteam.proxies.cr;
 
+import com.scdevteam.proto.HostsMap;
 import com.scdevteam.proxies.BaseClient;
 
 public class ClashRoyaleClient extends BaseClient {
@@ -15,9 +16,9 @@ public class ClashRoyaleClient extends BaseClient {
 
     @Override
     public String getGameHost() {
-        return "game.clashroyaleapp.com";
+        return HostsMap.PROD_CLASH_ROYALE;
     }
 
     @Override
-    public String getStageGameHost() { return "stage.scroll.supercelltest.com"; }
+    public String getStageGameHost() { return HostsMap.STAGE_CLASH_ROYALE; }
 }

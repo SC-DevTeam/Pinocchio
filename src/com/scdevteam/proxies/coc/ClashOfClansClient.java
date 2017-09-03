@@ -1,5 +1,6 @@
 package com.scdevteam.proxies.coc;
 
+import com.scdevteam.proto.HostsMap;
 import com.scdevteam.proxies.BaseClient;
 
 public class ClashOfClansClient extends BaseClient  {
@@ -14,9 +15,9 @@ public class ClashOfClansClient extends BaseClient  {
 
     @Override
     public String getGameHost() {
-        return "gamea.clashofclans.com";
+        return HostsMap.PROD_CLASH_OF_CLANS;
     }
 
     @Override
-    public String getStageGameHost() { return "stage.clashofclans.com"; }
+    public String getStageGameHost() { return HostsMap.STAGE_CLASH_OF_CLANS; }
 }
