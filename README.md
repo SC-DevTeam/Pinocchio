@@ -30,8 +30,8 @@ Show help
 
 * patch [cr - coc - bb - hh - bs] [host] [key optional]
 
-Patchers. HayDay and BrawlStars are TODO. Extract libg from android device through adb, patch it (ONLY ARM) and upload it back.
+Patchers. BrawlStars will be done once it's released for Android. Extract libg from android device through adb, patch it (ONLY ARM) and upload it back.
 
 * proxy [cr - coc - bb - hh - bs]
 
-Proxies. HayDay and BrawlStars are TODO. 
+Proxies. BrawlStars will be done once it's released for Android. 
