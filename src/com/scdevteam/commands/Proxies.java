@@ -5,6 +5,7 @@ import com.scdevteam.proxies.BaseProxy;
 import com.scdevteam.proxies.bb.BoomBeachProxy;
 import com.scdevteam.proxies.coc.ClashOfClansProxy;
 import com.scdevteam.proxies.cr.ClashRoyaleProxy;
+import com.scdevteam.proxies.hh.HayDayProxy;
 
 public class Proxies extends BaseCommand {
     private final int mGame;
@@ -49,6 +50,9 @@ public class Proxies extends BaseCommand {
                 break;
             case 2:
                 baseProxy = new BoomBeachProxy();
+                break;
+            case 3:
+                baseProxy = new HayDayProxy();
                 break;
             default:
                 WriterUtils.postError("This game is currently not supported by Pinocchio.");
