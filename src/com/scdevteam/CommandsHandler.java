@@ -23,6 +23,26 @@ class CommandsHandler {
                 }
 
                 return new Proxies(parts[1]);
+            case "hosts":
+                if (parts.length < 2) {
+                    return new MissingParams("hosts {add [ip] [dns]} {remove [dns]} {supercell}");
+
+                }
+
+                switch (parts[1]) {
+                    case "supercell":
+                        return new AndroidHostsEditor().scHosts();
+                    case "add":
+                        if (parts.length != 4) {
+                            return new MissingParams("hosts add [ip] [dns]");
+                        }
+                        return new AndroidHostsEditor().add(parts[2], parts[3]);
+                    case "remove":
+                        if (parts.length != 3) {
+                            return new MissingParams("hosts remove [dns]");
+                        }
+                        return new AndroidHostsEditor().remove(parts[2]);
+                }
         }
 
         return null;
