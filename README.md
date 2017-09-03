@@ -33,7 +33,7 @@ Pinocchio is actually a big WIP project. It's built with vanilla java, with all 
 
 Show help
 
-* patch [cr - coc - bb - hh - bs] [host] [key optional]
+* patch [cr - coc - bb - hh - bs]
 
 Patchers. BrawlStars will be done once it's released for Android. Extract libg from android device through adb, patch it (ONLY ARM) and upload it back.
 

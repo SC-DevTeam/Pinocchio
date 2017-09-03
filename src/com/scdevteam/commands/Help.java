@@ -9,9 +9,11 @@ public class Help extends BaseCommand {
         WriterUtils.postSuccess("Pinocchio commands");
         WriterUtils.post("");
         WriterUtils.postError("Patchers");
-        WriterUtils.postSuccess("patch [cr - coc - bb - hh - bs] [host] [key optional]");
+        WriterUtils.postSuccess("patch [cr - coc - bb - hh - bs]");
         WriterUtils.post("");
         WriterUtils.postError("Proxies");
         WriterUtils.postSuccess("proxy [cr - coc - bb - hh - bs]");
+        WriterUtils.post("");
+        WriterUtils.postAwesome("Get involved! Join our discord: https://discord.gg/hTVhy3V");
     }
 }

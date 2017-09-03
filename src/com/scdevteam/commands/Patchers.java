@@ -6,10 +6,8 @@ import com.scdevteam.WriterUtils;
 public class Patchers extends BaseCommand {
 
     private final int mGame;
-    private final String mHost;
-    private final String mKey;
 
-    public Patchers(String game, String host, String key) {
+    public Patchers(String game) {
         switch (game) {
             case "cr":
                 mGame = 0;
@@ -30,15 +28,12 @@ public class Patchers extends BaseCommand {
                 mGame = -1;
                 break;
         }
-
-        mHost = host;
-        mKey = key;
     }
 
     @Override
     public void execute() {
         if (mGame == -1) {
-            WriterUtils.postError("Game not valid. Use [cr - coc - bb - hh - bs] [host] [key optional]");
+            WriterUtils.postError("Game not valid. Use [cr - coc - bb - hh - bs]");
             return;
         }
 
@@ -82,33 +77,15 @@ public class Patchers extends BaseCommand {
     private void patchCr() {
         String gameName = "Clash Royale";
         String gamePackage = "com.supercell.clashroyale";
-        int hostLength = 23;
-
-        if (mHost.length() != hostLength) {
-            WriterUtils.postError("Host must be " + hostLength + " character length");
-            return;
-        }
 
         if (pullLib(gamePackage, gameName)) {
-            String result = ddExtract(4412475, hostLength);
-            result = result.split("\n")[0];
-            WriterUtils.postSuccess("Current host: " + result);
+            WriterUtils.postInfo("Patching key...");
 
-            WriterUtils.postInfo("Patching with new host: " + mHost);
-
-            boolean success = writePayload(mHost);
-
+            boolean success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
             if (success) {
-                ddPatch(4412475);
+                ddPatch(5324832);
 
-                WriterUtils.postInfo("Patching key...");
-
-                success = writePayload(Utils.hexToBuffer(mKey));
-                if (success) {
-                    ddPatch(5324832);
-
-                    finalizePatch(gameName, gamePackage);
-                }
+                finalizePatch(gameName, gamePackage);
             }
         }
     }
@@ -116,71 +93,19 @@ public class Patchers extends BaseCommand {
     private void patchCoc() {
         String gameName = "Clash of Clans";
         String gamePackage = "com.supercell.clashofclans";
-        int hostLength = 22;
-
-        if (mHost.length() != hostLength) {
-            WriterUtils.postError("Host must be " + hostLength + " character length");
-            return;
-        }
 
         if (pullLib(gamePackage, gameName)) {
-            String result = ddExtract(4828203, hostLength);
-            result = result.split("\n")[0];
-            WriterUtils.postSuccess("Current host: " + result);
+            WriterUtils.postInfo("Patching server key...");
 
-            WriterUtils.postInfo("Patching with new host: " + mHost);
-
-            boolean success = writePayload(mHost);
-
+            boolean success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
             if (success) {
-                ddPatch(4828203);
-
-                WriterUtils.postInfo("Patching server key...");
-
-                success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
-                if (success) {
-                    ddPatch(5754928);
-
-                    WriterUtils.postInfo("Patching magic key...");
-                    success = writePayload(Utils.hexToBuffer("14"));
-                    if (success) {
-                        ddPatch(4248312);
-                        ddPatch(4251436);
-                    }
-
-                    finalizePatch(gameName, gamePackage);
-                }
-            }
-        }
-    }
-
-    private void patchBB() {
-        String gameName = "Boom Beach";
-        String gamePackage = "com.supercell.boombeach";
-        int hostLength = 22;
-
-        if (mHost.length() != hostLength) {
-            WriterUtils.postError("Host must be " + hostLength + " character length");
-            return;
-        }
-
-        if (pullLib(gamePackage, gameName)) {
-            String result = ddExtract(5865650, hostLength);
-            result = result.split("\n")[0];
-            WriterUtils.postSuccess("Current host: " + result);
-
-            WriterUtils.postInfo("Patching with new host: " + mHost);
-
-            boolean success = writePayload(mHost);
-
-            if (success) {
-                ddPatch(5865650);
+                ddPatch(5754928);
 
                 WriterUtils.postInfo("Patching magic key...");
-                success = writePayload(Utils.hexToBuffer("18"));
+                success = writePayload(Utils.hexToBuffer("14"));
                 if (success) {
-                    ddPatch(5274540);
-                    ddPatch(5271652);
+                    ddPatch(4248312);
+                    ddPatch(4251436);
                 }
 
                 finalizePatch(gameName, gamePackage);
@@ -188,18 +113,26 @@ public class Patchers extends BaseCommand {
         }
     }
 
+    private void patchBB() {
+        String gameName = "Boom Beach";
+        String gamePackage = "com.supercell.boombeach";
+
+        if (pullLib(gamePackage, gameName)) {
+            WriterUtils.postInfo("Patching magic key...");
+            boolean success = writePayload(Utils.hexToBuffer("18"));
+            if (success) {
+                ddPatch(5274540);
+                ddPatch(5271652);
+            }
+
+            finalizePatch(gameName, gamePackage);
+        }
+    }
+
     private void patchHH() {
         String gameName = "HayDay";
         String gamePackage = "com.supercell.hayday";
-        int hostLength = 20;
-
-        if (mHost.length() != hostLength) {
-            WriterUtils.postError("Host must be " + hostLength + " character length");
-            return;
-        }
-
         if (pullLib(gamePackage, gameName)) {
-
             WriterUtils.postInfo("Patching magic key...");
             boolean success = writePayload(Utils.hexToBuffer("18"));
             if (success) {
