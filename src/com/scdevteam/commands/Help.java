@@ -14,6 +14,11 @@ public class Help extends BaseCommand {
         WriterUtils.postError("Proxies");
         WriterUtils.postSuccess("proxy [cr - coc - bb - hh - bs]");
         WriterUtils.post("");
+        WriterUtils.postInfo("Android Utilities");
+        WriterUtils.postSuccess("hosts add [ip] [dns]");
+        WriterUtils.postSuccess("hosts remove [dns]");
+        WriterUtils.postSuccess("hosts supercell");
+        WriterUtils.post("");
         WriterUtils.postAwesome("Get involved! Join our discord: https://discord.gg/hTVhy3V");
     }
 }

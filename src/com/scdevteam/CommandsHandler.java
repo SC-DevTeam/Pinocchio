@@ -19,7 +19,7 @@ class CommandsHandler {
                 return new Patchers(parts[1]);
             case "proxy":
                 if (parts.length < 2) {
-                    return new MissingParams("Usage: patch [cr - coc - bb - hh - bs]");
+                    return new MissingParams("Usage: proxy [cr - coc - bb - hh - bs]");
                 }
 
                 return new Proxies(parts[1]);
