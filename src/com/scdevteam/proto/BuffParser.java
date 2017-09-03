@@ -1,6 +1,7 @@
 package com.scdevteam.proto;
 
 import com.scdevteam.Utils;
+import com.scdevteam.WriterUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,8 +18,10 @@ public class BuffParser {
         mByteBuffer = ByteBuffer.wrap(payload);
     }
 
-    public String toDiscordResponse() {
+    public String toString() {
         StringBuilder res = new StringBuilder();
+        res.append("\n");
+        parseByte(res);
         parseInt(res);
         parseLong(res);
         parseBoolean(res);
@@ -27,8 +30,26 @@ public class BuffParser {
         return res.toString();
     }
 
+    private void parseByte(StringBuilder res) {
+        res.append(WriterUtils.buildRedBold("BYTE"));
+        res.append("\n");
+        try {
+            byte[] z = new byte[1];
+            res.append("hex: ");
+            ByteBuffer p = ByteBuffer.wrap(mPayload);
+            p.get(z, 0, 1);
+            res.append(Utils.toHexString(z));
+            res.append("\n");
+            res.append("value: ");
+            res.append(z[0] + "");
+        } catch (Exception ignored) {
+            res.append("0");
+        }
+        res.append("\n\n");
+    }
+
     private void parseLong(StringBuilder res) {
-        res.append("LONG:");
+        res.append(WriterUtils.buildRedBold("LONG"));
         res.append("\n");
         try {
             byte[] z = new byte[8];
@@ -54,7 +75,7 @@ public class BuffParser {
     }
 
     private void parseInt(StringBuilder res) {
-        res.append("INT32:");
+        res.append(WriterUtils.buildRedBold("INT32"));
         res.append("\n");
         try {
             byte[] z = new byte[4];
@@ -77,7 +98,7 @@ public class BuffParser {
     }
 
     private void parseBoolean(StringBuilder res) {
-        res.append("BOOLEAN:");
+        res.append(WriterUtils.buildRedBold("BOOLEAN"));
         res.append("\n");
         try {
             byte[] z = new byte[1];
@@ -97,7 +118,7 @@ public class BuffParser {
     }
 
     private void parseString(StringBuilder res) {
-        res.append("STRING:");
+        res.append(WriterUtils.buildRedBold("STRING"));
         res.append("\n");
         try {
             ByteBuffer p = ByteBuffer.wrap(mPayload);
@@ -121,7 +142,7 @@ public class BuffParser {
     }
 
     private void parseRrsInt(StringBuilder res) {
-        res.append("RRSINT32:");
+        res.append(WriterUtils.buildRedBold("RRSINT32"));
         res.append("\n");
         try {
             ByteBuffer p = ByteBuffer.wrap(mPayload);

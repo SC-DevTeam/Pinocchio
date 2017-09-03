@@ -29,6 +29,10 @@ public class Help extends BaseCommand {
         WriterUtils.postSuccess("hosts remove [dns]");
         WriterUtils.postSuccess("hosts supercell");
         WriterUtils.post("");
+        WriterUtils.postError(WriterUtils.buildGreenBold("Protocol Utilities"));
+        WriterUtils.postSuccess("parser [hexpayload] [offset - optional]");
+        WriterUtils.post("");
+        WriterUtils.post("");
         WriterUtils.postAwesome(WriterUtils.buildGreenBold("Get involved!") +
                 " Join our discord: https://discord.gg/hTVhy3V");
     }
