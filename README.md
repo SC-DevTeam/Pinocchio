@@ -1,9 +1,7 @@
 # Pinocchio
 
-Welcome to Pinocchio, the all in one SC games protocol understanding and exploitation. Pinocchio is an open source project supported by the community.
-
-## BIG WIP
-Pinocchio is actually a big WIP project. It's built with vanilla java, with all the boilerplates to allow an easy understanding of the code in the hope to have more people involved.
+Welcome to Pinocchio, the all in one SC games protocol understanding and exploitation. Pinocchio is an open source project supported by the community. 
+It's built with vanilla java, with all the boilerplates to allow an easy understanding of the code in the hope to have more people involved.
 
 ## Patchers
 
