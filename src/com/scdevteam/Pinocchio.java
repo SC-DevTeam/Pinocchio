@@ -18,8 +18,19 @@ public class Pinocchio {
         // Begin of configs
         WriterUtils.post("");
 
+        WriterUtils.post("Welcome to " + WriterUtils.buildPurpleBold("P") +
+                WriterUtils.buildGreenBold("I") +
+                WriterUtils.buildYellowBold("N") +
+                WriterUtils.buildCyanBold("O") +
+                WriterUtils.buildRedBold("C") +
+                WriterUtils.buildPurpleBold("C") +
+                WriterUtils.buildGreenBold("H") +
+                WriterUtils.buildYellowBold("I") +
+                WriterUtils.buildCyanBold("O")
+        );
+
         WriterUtils.post("");
-        WriterUtils.post("Type help to begin");
+        WriterUtils.post("Type " + WriterUtils.buildGreenBold("help") + " to begin");
         WriterUtils.post("");
         setupStdin();
     }

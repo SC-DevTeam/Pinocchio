@@ -43,7 +43,7 @@ Proxies. BrawlStars will be done once it's released for Android.
 Pull hosts file from Android through adb, write it and upload back
 
 * hosts remove [dns]
-Pull hosts file from Android, remove the dns and upload back
+Pull hosts file from Android through adb, remove the dns and upload back
 
 * hosts supercell
 Print a list of supercell game dns
