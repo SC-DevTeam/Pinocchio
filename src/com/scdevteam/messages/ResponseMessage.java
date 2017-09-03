@@ -2,11 +2,11 @@ package com.scdevteam.messages;
 
 import com.scdevteam.Utils;
 import com.scdevteam.crypto.sodium.crypto.BaseCrypto;
-import com.scdevteam.maps.MessageMap;
+import com.scdevteam.proto.MessageMap;
 
 import java.nio.ByteBuffer;
 
-public class ResponseMessage extends Message {
+public class ResponseMessage extends BaseMessage {
     private final ByteBuffer mChunks;
 
     public ResponseMessage(int msgId, int len, int ver) {

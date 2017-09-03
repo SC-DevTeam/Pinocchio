@@ -1,6 +1,6 @@
 package com.scdevteam.messages;
 
-public class Message {
+public class BaseMessage {
     private final boolean mOutgoing;
 
     protected int mMessageID;
@@ -9,7 +9,7 @@ public class Message {
     protected byte[] mEncrypted;
     protected byte[] mDecrypted;
 
-    public Message(boolean outgoing) {
+    public BaseMessage(boolean outgoing) {
         mOutgoing = outgoing;
     }
 

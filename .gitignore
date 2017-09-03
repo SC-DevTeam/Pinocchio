@@ -1,3 +1,7 @@
 .idea
 *.iml
 out
+/libg.so
+/hosts
+/tmp
+/src/META-INF/

@@ -104,7 +104,14 @@ public class WriterUtils {
 
     public static void postSuccess(String msg) {
         post("[" + buildGreenBold("+") + "] " + msg);
+    }
 
+    public static void postDanger(String msg) {
+        post("[" + buildYellowBold("+") + "] " + msg);
+    }
+
+    public static void postAwesome(String msg) {
+        post("[" + buildPurpleBold("+") + "] " + msg);
     }
 
     public static void post(String msg) {

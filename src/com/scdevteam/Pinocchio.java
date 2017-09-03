@@ -6,9 +6,7 @@ import java.util.Scanner;
 
 public class Pinocchio {
 
-    public Pinocchio() {
-
-    }
+    private final Object mPinocchioLocker = new Object();
 
     public void init() {
         StringBuilder bannerBuilder = new StringBuilder();
@@ -42,16 +40,21 @@ public class Pinocchio {
                     return;
                 }
 
-                BaseCommand baseCommand = CommandsHandler.handleCommand(input);
+                BaseCommand baseCommand = CommandsHandler.getCommand(input);
+                if (baseCommand != null) {
+                    baseCommand.init(this);
+                }
 
                 if (baseCommand == null) {
                     WriterUtils.postInfo("Command not found!");
                 } else {
                     while (baseCommand.isRunning()) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        synchronized (mPinocchioLocker) {
+                            try {
+                                mPinocchioLocker.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -65,5 +68,9 @@ public class Pinocchio {
 
     public static void writeMarker() {
         System.out.print(WriterUtils.RED_BOLD + "$> " + WriterUtils.RESET);
+    }
+
+    public Object getLocker() {
+        return mPinocchioLocker;
     }
 }

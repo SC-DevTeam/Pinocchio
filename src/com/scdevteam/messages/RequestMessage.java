@@ -3,12 +3,11 @@ package com.scdevteam.messages;
 import com.scdevteam.Utils;
 import com.scdevteam.crypto.sodium.crypto.BaseCrypto;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class RequestMessage extends Message {
+public class RequestMessage extends BaseMessage {
     public RequestMessage(int messageId, int payloadLength,
-                          int version, byte[] payload, BaseCrypto baseCrypto) throws IOException {
+                          int version, byte[] payload, BaseCrypto baseCrypto) {
         super(true);
 
         mMessageID = messageId;

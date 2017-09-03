@@ -1,5 +1,9 @@
-package com.scdevteam;
+package com.scdevteam.proto;
 
+import com.scdevteam.Utils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -102,7 +106,7 @@ public class BuffParser {
             res.append(len);
             res.append("\n");
 
-            if (len > p.remaining()) {
+            if (len > p.remaining() || len < 0) {
                 res.append("value: -");
             } else {
                 byte[] z = new byte[len];
@@ -160,14 +164,14 @@ public class BuffParser {
         return mByteBuffer.get() > 0;
     }
 
-    public String readString() {
+    public SString readString() {
         int len = readInt();
-        if (len > mByteBuffer.remaining()) {
-            return "Not a string?";
+        if (len > mByteBuffer.remaining() || len < 0) {
+            return new SString(0, "Not a string?");
         }
         byte[] s = new byte[len];
         mByteBuffer.get(s, 0, len);
-        return new String(s);
+        return new SString(len, new String(s));
     }
 
     public RrsInt readRssInt32() {
@@ -232,6 +236,25 @@ public class BuffParser {
         public RrsInt(int len, int val) {
             this.len = len;
             this.val = val;
+        }
+    }
+
+    public static class SString {
+        public int len;
+        public String s;
+        public SString(int len, String s) {
+            this.len = len;
+            this.s = s;
+        }
+        public byte[] toBuff() {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try {
+                bos.write(Utils.fromInt32(len));
+                bos.write(s.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bos.toByteArray();
         }
     }
 }

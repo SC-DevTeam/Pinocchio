@@ -1,7 +1,7 @@
 package com.scdevteam.crypto.sodium.crypto;
 
 import com.scdevteam.Utils;
-import com.scdevteam.maps.MessageMap;
+import com.scdevteam.proto.MessageMap;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
 
@@ -11,8 +11,12 @@ import java.util.Arrays;
 
 public class ClientCrypto extends BaseCrypto {
 
-    public ClientCrypto(byte[] serverKey) {
+    private final ServerCrypto mServerSodium;
+
+    public ClientCrypto(byte[] serverKey, ServerCrypto serverSodium) {
         super();
+
+        mServerSodium = serverSodium;
 
         TweetNaCl.crypto_box_keypair(clientKey, privateKey, false);
         this.serverKey = serverKey;
@@ -39,10 +43,15 @@ public class ClientCrypto extends BaseCrypto {
                 if (message.getDecryptedPayload() != null) {
                     decryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
                             0, 24));
+                    mServerSodium.encryptNonce = new Nonce(Arrays.copyOfRange(message.getDecryptedPayload(),
+                            0, 24));
+
                     sharedKey = Arrays.copyOfRange(message.getDecryptedPayload(),
                             24, 56);
+
                     message.setDecryptedPayload(Arrays.copyOfRange(message.getDecryptedPayload(),
                             56, message.getDecryptedPayload().length));
+
                 }
                 break;
             default:

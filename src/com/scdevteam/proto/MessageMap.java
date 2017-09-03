@@ -1,10 +1,7 @@
-package com.scdevteam.maps;
+package com.scdevteam.proto;
 
-import com.scdevteam.BuffParser;
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
-import com.scdevteam.maps.mappers.Mapper;
-import com.scdevteam.maps.mappers.cr.server.OwnHomeData;
 
 import java.nio.ByteBuffer;
 
@@ -329,8 +326,8 @@ public class MessageMap {
         }
     }
 
-    public static String getMap(int msgId, byte[] wht) {
-        Mapper map = getMap(msgId);
+    public static String getMap(GameMapper gameMapper, int msgId, byte[] wht) {
+        Mapper map = gameMapper.getMap(msgId);
         if (map != null) {
             BuffParser buffParser = new BuffParser(wht, 0);
 
@@ -343,8 +340,9 @@ public class MessageMap {
 
             if (buffParser.hasRemaining()) {
                 byte[] rem = buffParser.remaining();
-                WriterUtils.postInfo("REMAININGS:\n" + new String(rem));
-                WriterUtils.postInfo("REMAININGS HEX:\n" + Utils.toHexString(rem));
+
+                //WriterUtils.post("");
+                //WriterUtils.postInfo("REMAININGS HEX:\n" + Utils.hexDump(rem));
             }
             return r.toString();
         }
@@ -356,9 +354,9 @@ public class MessageMap {
                                          BuffParser buffParser, int i, boolean sub) {
         String n = mapPoint.getName(i);
         if (mapPoint.getMapValue() != Mapper.MapValueType.COMPONENT) {
-            r.append(n).append("\n");
+            r.append(WriterUtils.buildGreenBold(n)).append("\n");
         } else {
-            r.append(n)
+            r.append(WriterUtils.buildGreenBold(n))
                     .append(" ")
                     .append(i)
                     .append("\n");
@@ -367,85 +365,97 @@ public class MessageMap {
         ByteBuffer clone = buffParser.cloneBuffer();
         byte[] d;
 
-        switch (mapPoint.getMapValue()) {
-            case COMPONENT:
-                if (!sub) {
-                    r.append("\n");
-                }
-                int len = buffParser.readRssInt32().val;
-                for (int k=0;k<len;k++) {
-                    populateMapPoint(mapPoint.getComponent().getMapPoints()[0],
-                            r, buffParser, k + 1, true);
-                }
-                break;
-            case INT32:
-                d = new byte[4];
-                clone.get(d, 0, 4);
+        try {
+            switch (mapPoint.getMapValue()) {
+                case BYTE:
+                    d = new byte[1];
+                    clone.get(d, 0, 1);
 
-                r.append(buffParser.readInt())
-                        .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (INT)");
-                break;
-            case LONG:
-                d = new byte[8];
-                clone.get(d, 0, 8);
-                r.append(buffParser.readLong().hi)
-                        .append(" ")
-                        .append(buffParser.readLong().lo)
-                        .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (LONG)");
-                break;
-            case RRSINT32:
-                BuffParser.RrsInt rrsInt = buffParser.readRssInt32();
+                    r.append(buffParser.readInt())
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                            .append(WriterUtils.buildCyanBold(" (BYTE)"));
+                    break;
+                case COMPONENT:
+                    if (!sub) {
+                        r.append("\n");
+                    }
+                    int len = buffParser.readRssInt32().val;
+                    for (int k = 0; k < len; k++) {
+                        populateMapPoint(mapPoint.getComponent().getMapPoints()[0],
+                                r, buffParser, k + 1, true);
+                    }
+                    break;
+                case INT32:
+                    d = new byte[4];
+                    clone.get(d, 0, 4);
 
-                d = new byte[rrsInt.len];
-                clone.get(d, 0, rrsInt.len);
+                    r.append(buffParser.readInt())
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                            .append(WriterUtils.buildCyanBold(" (INT)"));
+                    break;
+                case LONG:
+                    d = new byte[8];
+                    clone.get(d, 0, 8);
+                    BuffParser.SLong sLong = buffParser.readLong();
+                    r.append(sLong.hi)
+                            .append(" ")
+                            .append(sLong.lo)
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                            .append(WriterUtils.buildCyanBold(" (LONG)"));
+                    break;
+                case RRSINT32:
+                    BuffParser.RrsInt rrsInt = buffParser.readRssInt32();
 
-                r.append(rrsInt.val)
-                        .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (RSSINT32)");
-                break;
-            case STRING:
-                r.append(buffParser.readString())
-                        .append(" (STRING)");
-                break;
-            case BOOLEAN:
-                d = new byte[1];
-                clone.get(d, 0, 1);
-                r.append(buffParser.readBoolean())
-                        .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (BOOLEAN)");
-                break;
-            case TAG:
-                d = new byte[8];
-                clone.get(d, 0, 8);
-                BuffParser.SLong l = buffParser.readLong();
-                r.append(l.hi)
-                        .append(" ")
-                        .append(l.lo)
-                        .append(" ")
-                        .append(l.v)
-                        .append(" ")
-                        .append(Utils.tagFromId(l))
-                        .append(" ")
-                        .append(Utils.toHexString(d))
-                        .append(" (TAG)");
+                    d = new byte[rrsInt.len];
+                    clone.get(d, 0, rrsInt.len);
 
+                    r.append(rrsInt.val)
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                            .append(WriterUtils.buildCyanBold(" (RRSINT32)"));
+                    break;
+                case STRING:
+                    BuffParser.SString sString = buffParser.readString();
+                    r.append(sString.s)
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(sString.toBuff())))
+                            .append(WriterUtils.buildCyanBold(" (STRING)"));
+                    break;
+                case BOOLEAN:
+                    d = new byte[1];
+                    clone.get(d, 0, 1);
+                    r.append(buffParser.readBoolean())
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                            .append(WriterUtils.buildCyanBold(" (BOOLEAN)"));
+                    break;
+                case TAG:
+                    d = new byte[8];
+                    clone.get(d, 0, 8);
+                    BuffParser.SLong l = buffParser.readLong();
+                    r.append(l.hi)
+                            .append(" ")
+                            .append(l.lo)
+                            .append(" ")
+                            .append(l.v)
+                            .append(" ")
+                            .append(Utils.tagFromId(l))
+                            .append(" ")
+                            .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
+                            .append(WriterUtils.buildCyanBold(" (TAG)"));
+                    break;
+
+            }
+        } catch (Exception e) {
+            r.append("Failed to parse");
         }
+
         if (mapPoint.getMapValue() != Mapper.MapValueType.COMPONENT) {
             r.append("\n\n");
         }
     }
 
-    private static Mapper getMap(int msgId) {
-        switch (msgId) {
-            case 24101:
-                return new OwnHomeData();
-        }
-        return null;
-    }
 }

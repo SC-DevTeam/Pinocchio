@@ -1,5 +1,6 @@
 package com.scdevteam;
 
+import com.scdevteam.proto.BuffParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +11,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.Random;
 
 public class Utils {
@@ -65,6 +67,10 @@ public class Utils {
     }
 
     public static String toHexString(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return "";
+        }
+
         char[] hexChars = new char[bytes.length*2];
         int v;
 
@@ -86,6 +92,22 @@ public class Utils {
         }
 
         return data;
+    }
+
+    public static String hexDump(byte[] b) {
+        StringBuilder sb = new StringBuilder();
+        Formatter formatter = new Formatter(sb);
+        for (int j = 1; j < b.length + 1; j++) {
+            if (j % 16 == 1) {
+                sb.append("\n");
+            }
+            formatter.format("%02X", b[j - 1]);
+            if (j % 4 == 0) {
+                sb.append(" ");
+            }
+        }
+        sb.append("\n");
+        return sb.toString();
     }
 
     public static String getRandomHexString(int length) {
