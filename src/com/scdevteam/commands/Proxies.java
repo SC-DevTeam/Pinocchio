@@ -40,25 +40,28 @@ public class Proxies extends BaseCommand {
             return;
         }
 
-        BaseProxy baseProxy;
-        switch (mGame) {
-            case 0:
-                baseProxy = new ClashRoyaleProxy();
-                break;
-            case 1:
-                baseProxy = new ClashOfClansProxy();
-                break;
-            case 2:
-                baseProxy = new BoomBeachProxy();
-                break;
-            case 3:
-                baseProxy = new HayDayProxy();
-                break;
-            default:
-                WriterUtils.postError("This game is currently not supported by Pinocchio.");
-                return;
-        }
+        // Persistent
+        while (true) {
+            BaseProxy baseProxy;
+            switch (mGame) {
+                case 0:
+                    baseProxy = new ClashRoyaleProxy();
+                    break;
+                case 1:
+                    baseProxy = new ClashOfClansProxy();
+                    break;
+                case 2:
+                    baseProxy = new BoomBeachProxy();
+                    break;
+                case 3:
+                    baseProxy = new HayDayProxy();
+                    break;
+                default:
+                    WriterUtils.postError("This game is currently not supported by Pinocchio.");
+                    return;
+            }
 
-        baseProxy.init();
+            baseProxy.init(getOptions());
+        }
     }
 }

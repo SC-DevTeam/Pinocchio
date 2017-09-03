@@ -2,6 +2,7 @@ package com.scdevteam.proxies;
 
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
+import com.scdevteam.commands.BaseCommand;
 import com.scdevteam.crypto.sodium.crypto.ServerCrypto;
 import com.scdevteam.messages.RequestMessage;
 import com.scdevteam.messages.ResponseMessage;
@@ -25,7 +26,7 @@ public abstract class BaseProxy extends Base {
 
     private Socket mClientSocket;
 
-    public void init() {
+    public void init(BaseCommand.Options options) {
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(9339);
@@ -40,6 +41,7 @@ public abstract class BaseProxy extends Base {
             mMapper = buildMapper();
             mSodium = new ServerCrypto(this, getMagicKey());
             mClient = buildClient();
+            mClient.setOptions(options);
 
             InputStream inputStream = mClientSocket.getInputStream();
 
@@ -76,7 +78,9 @@ public abstract class BaseProxy extends Base {
                     WriterUtils.postAwesome("[CLIENT] " +
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
-                    WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
+                    if (options.haveOption("hex")) {
+                        WriterUtils.post(Utils.hexDump(responseMessage.getDecryptedPayload()));
+                    }
 
                     if (map != null) {
                         WriterUtils.post(map);
@@ -96,7 +100,7 @@ public abstract class BaseProxy extends Base {
         }
     }
 
-    public void sendMessageToClient(final int messageId, final int version, final byte[] payload) {
+    void sendMessageToClient(final int messageId, final int version, final byte[] payload) {
         try {
             final RequestMessage requestMessage =
                     new RequestMessage(messageId, payload.length, version, payload, mSodium);

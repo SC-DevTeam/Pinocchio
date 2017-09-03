@@ -4,10 +4,13 @@ import com.scdevteam.Pinocchio;
 import com.scdevteam.WriterUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class BaseCommand {
 
-    public boolean mIsRunning = true;
+    private boolean mIsRunning = true;
+    private Options mOptions;
 
     public void init(Pinocchio pinocchio) {
         new Thread(() -> {
@@ -86,5 +89,32 @@ public abstract class BaseCommand {
 
     public boolean isRunning() {
         return mIsRunning;
+    }
+
+    public Options getOptions() {
+        return mOptions;
+    }
+
+    public void parseOptions(String input) {
+        mOptions = new Options();
+
+        String[] parts = input.split(" ");
+        for (String p : parts) {
+            if (p.startsWith("--")) {
+                mOptions.addOption(p.substring(2));
+            }
+        }
+    }
+
+    public class Options {
+        private final HashSet<String> mOptions = new HashSet<>();
+
+        void addOption(String option) {
+            mOptions.add(option);
+        }
+
+        public boolean haveOption(String option) {
+            return mOptions.contains(option);
+        }
     }
 }

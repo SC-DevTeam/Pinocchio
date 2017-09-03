@@ -2,6 +2,7 @@ package com.scdevteam.proxies;
 
 import com.scdevteam.Utils;
 import com.scdevteam.WriterUtils;
+import com.scdevteam.commands.BaseCommand;
 import com.scdevteam.crypto.sodium.crypto.BaseCrypto;
 import com.scdevteam.crypto.sodium.crypto.ClientCrypto;
 import com.scdevteam.messages.RequestMessage;
@@ -26,11 +27,16 @@ public abstract class BaseClient implements Runnable {
     private final Object mLocker = new Object();
 
     private Socket mGameSocket;
+    private BaseCommand.Options mOptions;
 
     public BaseClient(BaseProxy proxy) {
         mProxy = proxy;
         mSodium = new ClientCrypto(Utils.hexToBuffer(getKey()), mProxy.getCrypto());
         new Thread(this).start();
+    }
+
+    void setOptions(BaseCommand.Options options) {
+        mOptions = options;
     }
 
     @Override
@@ -77,15 +83,13 @@ public abstract class BaseClient implements Runnable {
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
 
-                    if (responseMessage.getDecryptedPayload() == null) {
-                        responseMessage.setDecryptedPayload(new byte[0]);
-                    }
-
                     String map = MessageMap.getMap(mProxy.getMapper(),
                             responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
-                    WriterUtils.post(Utils.toHexString(responseMessage.getDecryptedPayload()));
+                    if (mOptions.haveOption("hex")) {
+                        WriterUtils.post(Utils.hexDump(responseMessage.getDecryptedPayload()));
+                    }
 
                     if (map != null) {
                         WriterUtils.post(map);
