@@ -141,4 +141,6 @@ public abstract class BaseClient implements Runnable {
     public abstract String getKey();
 
     public abstract String getGameHost();
+
+    public abstract String getStageGameHost();
 }

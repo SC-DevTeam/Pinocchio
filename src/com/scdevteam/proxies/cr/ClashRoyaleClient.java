@@ -17,4 +17,7 @@ public class ClashRoyaleClient extends BaseClient {
     public String getGameHost() {
         return "game.clashroyaleapp.com";
     }
+
+    @Override
+    public String getStageGameHost() { return "stage.scroll.supercelltest.com"; }
 }
