@@ -24,6 +24,7 @@ It's built with vanilla java, with all the boilerplates to allow an easy underst
 
 # How to start
 ```
+wget https://github.com/SC-DevTeam/Pinocchio/raw/master/Pinocchio.jar
 java -jar Pinocchio.jar
 $> help
 ```
