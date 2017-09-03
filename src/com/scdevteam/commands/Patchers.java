@@ -64,6 +64,9 @@ public class Patchers extends BaseCommand {
                     case 2:
                         patchBB();
                         break;
+                    case 3:
+                        patchHH();
+                        break;
                     default:
                         WriterUtils.postError("This game is currently not supported by the patcher");
                         break;
@@ -184,6 +187,30 @@ public class Patchers extends BaseCommand {
             }
         }
     }
+
+    private void patchHH() {
+        String gameName = "HayDay";
+        String gamePackage = "com.supercell.hayday";
+        int hostLength = 20;
+
+        if (mHost.length() != hostLength) {
+            WriterUtils.postError("Host must be " + hostLength + " character length");
+            return;
+        }
+
+        if (pullLib(gamePackage, gameName)) {
+
+            WriterUtils.postInfo("Patching magic key...");
+            boolean success = writePayload(Utils.hexToBuffer("18"));
+            if (success) {
+                ddPatch(4791700);
+                ddPatch(4794588);
+            }
+
+            finalizePatch(gameName, gamePackage);
+        }
+    }
+
     private boolean pullLib(String gamePackageName, String gameName) {
         String result = execShellCmd("adb shell su -c cp /data/data/" + gamePackageName + "/lib/libg.so /sdcard/");
         if (result.isEmpty()) {
