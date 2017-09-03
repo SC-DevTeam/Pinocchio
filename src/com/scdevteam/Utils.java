@@ -96,14 +96,23 @@ public class Utils {
 
     public static String hexDump(byte[] b) {
         StringBuilder sb = new StringBuilder();
+        StringBuilder sbb = new StringBuilder();
         Formatter formatter = new Formatter(sb);
         for (int j = 1; j < b.length + 1; j++) {
             if (j % 16 == 1) {
+                sb.append(" ");
+                sb.append(sbb.toString());
+                sbb = new StringBuilder();
                 sb.append("\n");
             }
-            formatter.format("%02X", b[j - 1]);
+            byte[] bc = new byte[1];
+            bc[0] = b[j - 1];
+            formatter.format("%02X", bc[0]);
+            String s = new String(bc);
+            sbb.append(s.replace("\n", " "));
             if (j % 4 == 0) {
                 sb.append(" ");
+                sbb.append(" ");
             }
         }
         sb.append("\n");

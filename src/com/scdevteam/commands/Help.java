@@ -22,6 +22,7 @@ public class Help extends BaseCommand {
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Proxies"));
         WriterUtils.postSuccess("proxy [cr - coc - bb - hh - bs]");
+        WriterUtils.postAwesome(WriterUtils.buildRedBold("--hex") + " hexdump decrypted payloads");
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Android Utilities"));
         WriterUtils.postSuccess("hosts add [ip] [dns]");

@@ -79,7 +79,7 @@ public abstract class BaseClient implements Runnable {
 
                     responseMessage.finish(payload, mSodium);
 
-                    WriterUtils.postDanger("[SERVER] " +
+                    WriterUtils.postAwesome("[" + WriterUtils.buildPurpleBold("SERVER") + "] " +
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
 
@@ -92,6 +92,7 @@ public abstract class BaseClient implements Runnable {
                     }
 
                     if (map != null) {
+                        WriterUtils.post("");
                         WriterUtils.post(map);
                     }
                     WriterUtils.post("");

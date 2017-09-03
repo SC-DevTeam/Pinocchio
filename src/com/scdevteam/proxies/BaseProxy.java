@@ -75,7 +75,7 @@ public abstract class BaseProxy extends Base {
                     String map = MessageMap.getMap(mMapper, responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
-                    WriterUtils.postAwesome("[CLIENT] " +
+                    WriterUtils.postAwesome("[" + WriterUtils.buildYellowBold("CLIENT") + "] " +
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
                     if (options.haveOption("hex")) {
@@ -83,6 +83,7 @@ public abstract class BaseProxy extends Base {
                     }
 
                     if (map != null) {
+                        WriterUtils.post("");
                         WriterUtils.post(map);
                     }
                     WriterUtils.post("");
