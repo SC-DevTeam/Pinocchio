@@ -18,10 +18,10 @@ public class Help extends BaseCommand {
         );
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Patchers"));
-        WriterUtils.postSuccess("patch [cr - coc - bb - hh - bs]");
+        WriterUtils.postSuccess("patch [cr - coc - bb - hd - bs]");
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Proxies"));
-        WriterUtils.postSuccess("proxy [cr - coc - bb - hh - bs]");
+        WriterUtils.postSuccess("proxy [cr - coc - bb - hd - bs]");
         WriterUtils.postAwesome(WriterUtils.buildRedBold("--hex") + " hexdump decrypted payloads");
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Android Utilities"));
@@ -31,6 +31,7 @@ public class Help extends BaseCommand {
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Protocol Utilities"));
         WriterUtils.postSuccess("parser [hexpayload] [offset - optional]");
+        WriterUtils.postSuccess("struct");
         WriterUtils.post("");
         WriterUtils.post("");
         WriterUtils.postAwesome(WriterUtils.buildGreenBold("Get involved!") +

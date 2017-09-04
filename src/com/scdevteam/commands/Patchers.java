@@ -18,7 +18,7 @@ public class Patchers extends BaseCommand {
             case "bb":
                 mGame = 2;
                 break;
-            case "hh":
+            case "hd":
                 mGame = 3;
                 break;
             case "bs":

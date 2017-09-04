@@ -1,7 +1,6 @@
 package com.scdevteam;
 
 import com.scdevteam.commands.*;
-import com.scdevteam.proto.BuffParser;
 import org.jetbrains.annotations.Nullable;
 
 class CommandsHandler {
@@ -65,8 +64,11 @@ class CommandsHandler {
                 if (offset >= buffer.length) {
                     return new MissingParams("Invalid offset");
                 }
-
                 return new Parser(buffer, offset);
+            case "struct":
+
+                break;
+
         }
 
         return null;
