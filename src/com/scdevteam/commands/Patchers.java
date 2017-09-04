@@ -62,6 +62,9 @@ public class Patchers extends BaseCommand {
                     case 3:
                         patchHH();
                         break;
+                    case 4:
+                        //TODO: Brawl Stars
+                        break;
                     default:
                         WriterUtils.postError("This game is currently not supported by the patcher");
                         break;
@@ -84,6 +87,15 @@ public class Patchers extends BaseCommand {
             boolean success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
             if (success) {
                 ddPatch(5324832);
+
+                if (getOptions().haveOption("tv")) {
+                    WriterUtils.postInfo("Patching TV Royale...");
+
+                    success = writePayload(Utils.hexToBuffer("022951DC"));
+                    if (success) {
+                        ddPatch(1260626);
+                    }
+                }
 
                 finalizePatch(gameName, gamePackage);
             }

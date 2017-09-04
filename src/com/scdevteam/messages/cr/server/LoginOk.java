@@ -13,7 +13,7 @@ public class LoginOk extends Mapper {
                 new MapPoint("GameCenter ID", MapValueType.STRING),
                 new MapPoint("Facebook ID", MapValueType.STRING),
                 new MapPoint("Major version", MapValueType.RRSINT32),
-                new MapPoint("Minor version", MapValueType.RRSINT32),
+                new MapPoint("Build version", MapValueType.RRSINT32),
                 new MapPoint("Build version", MapValueType.RRSINT32),
                 new MapPoint("Content version", MapValueType.RRSINT32),
                 new MapPoint("Environment", MapValueType.STRING),

@@ -19,6 +19,9 @@ It's built with vanilla java, with all the boilerplates to allow an easy underst
 ## Utilities
 * Protocol definitions and parser
 
+## Extras
+* CR TV Royale patch to display results before watching battles
+
 # TODO
 * Port all the messages from the know ones to Pinocchio java mapper
 

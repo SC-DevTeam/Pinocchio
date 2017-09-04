@@ -19,6 +19,7 @@ public class Help extends BaseCommand {
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Patchers"));
         WriterUtils.postSuccess("patch [cr - coc - bb - hd - bs]");
+        WriterUtils.postAwesome(WriterUtils.buildRedBold("--tv") + " extra patch for CR TV Royale to show results before watching battles");
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Proxies"));
         WriterUtils.postSuccess("proxy [cr - coc - bb - hd - bs]");
@@ -31,7 +32,6 @@ public class Help extends BaseCommand {
         WriterUtils.post("");
         WriterUtils.postError(WriterUtils.buildGreenBold("Protocol Utilities"));
         WriterUtils.postSuccess("parser [hexpayload] [offset - optional]");
-        WriterUtils.postSuccess("struct");
         WriterUtils.post("");
         WriterUtils.post("");
         WriterUtils.postAwesome(WriterUtils.buildGreenBold("Get involved!") +
