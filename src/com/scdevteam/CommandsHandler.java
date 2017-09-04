@@ -66,8 +66,12 @@ class CommandsHandler {
                 }
                 return new Parser(buffer, offset);
             case "struct":
+                if (parts.length < 2) {
+                    WriterUtils.postError("struct [init - commit]");
+                    return new MissingParams("struct field [add - remove]");
+                }
 
-                break;
+                return new Struct(parts);
 
         }
 
