@@ -4,9 +4,9 @@ import com.scdevteam.proto.Mapper;
 
 public class DeckComponent extends Mapper {
     @Override
-    public Mapper.MapPoint[] getMapPoints() {
+    public MapPoint[] getMapPoints() {
         return new MapPoint[] {
-                new MapPoint("deck", new CardComponent())
+                new MapPoint("deck", new CardComponent(), ComponentLength.RRSINT32())
         };
     }
 }

@@ -351,15 +351,11 @@ public class MessageMap {
     }
 
     private static void populateMapPoint(Mapper.MapPoint mapPoint, StringBuilder r,
-                                         BuffParser buffParser, int i, boolean sub) {
-        String n = mapPoint.getName(i);
+                                         BuffParser buffParser, int index,
+                                         boolean sub) {
+        String n = mapPoint.getName(index);
         if (mapPoint.getMapValue() != Mapper.MapValueType.COMPONENT) {
             r.append(WriterUtils.buildGreenBold(n)).append("\n");
-        } else {
-            r.append(WriterUtils.buildGreenBold(n))
-                    .append(" ")
-                    .append(i)
-                    .append("\n");
         }
 
         ByteBuffer clone = buffParser.cloneBuffer();
@@ -371,7 +367,7 @@ public class MessageMap {
                     d = new byte[1];
                     clone.get(d, 0, 1);
 
-                    r.append(buffParser.readInt())
+                    r.append(buffParser.readByte())
                             .append(" ")
                             .append(WriterUtils.buildRedBold(Utils.toHexString(d)))
                             .append(WriterUtils.buildCyanBold(" (BYTE)"));
@@ -380,10 +376,29 @@ public class MessageMap {
                     if (!sub) {
                         r.append("\n");
                     }
-                    int len = buffParser.readRssInt32().val;
+                    int len = 0;
+                    switch (mapPoint.getComponentLength().getLengthType()) {
+                        case LENGTH_FIXED:
+                            len = mapPoint.getComponentLength().getLength();
+                            break;
+                        case LENGTH_RRSINT:
+                            len = buffParser.readRssInt32().val;
+                            break;
+                        case LENGTH_INT:
+                            len = buffParser.readInt();
+                            break;
+                    }
+
+                    r.append(WriterUtils.buildPurpleBold(n))
+                            .append(" (")
+                            .append(len)
+                            .append(")")
+                            .append("\n");
+
                     for (int k = 0; k < len; k++) {
-                        populateMapPoint(mapPoint.getComponent().getMapPoints()[0],
-                                r, buffParser, k + 1, true);
+                        for (Mapper.MapPoint mp : mapPoint.getComponent().getMapPoints()) {
+                            populateMapPoint(mp, r, buffParser, k + 1, true);
+                        }
                     }
                     break;
                 case INT32:

@@ -171,21 +171,25 @@ public class BuffParser {
         res.append("\n\n");
     }
 
-    public int readInt() {
+    byte readByte() {
+        return mByteBuffer.get();
+    }
+
+    int readInt() {
         return mByteBuffer.getInt();
     }
 
-    public SLong readLong() {
+    SLong readLong() {
         byte[] l = new byte[8];
         mByteBuffer.get(l, 0, 8);
         return new SLong(ByteBuffer.wrap(l));
     }
 
-    public boolean readBoolean() {
+    boolean readBoolean() {
         return mByteBuffer.get() > 0;
     }
 
-    public SString readString() {
+    SString readString() {
         int len = readInt();
         if (len > mByteBuffer.remaining() || len < 0) {
             return new SString(0, "Not a string?");
@@ -195,7 +199,7 @@ public class BuffParser {
         return new SString(len, new String(s));
     }
 
-    public RrsInt readRssInt32() {
+    RrsInt readRssInt32() {
         int c = 0;
         int v = 0;
         int seventh;
@@ -224,24 +228,24 @@ public class BuffParser {
         return new RrsInt(c, v);
     }
 
-    public boolean hasRemaining() {
+    boolean hasRemaining() {
         return mByteBuffer.hasRemaining();
     }
 
-    public byte[] remaining() {
+    byte[] remaining() {
         byte[] r = new byte[mByteBuffer.remaining()];
         mByteBuffer.get(r, 0, r.length);
         return r;
     }
 
-    public ByteBuffer cloneBuffer() {
+    ByteBuffer cloneBuffer() {
         return mByteBuffer.duplicate();
     }
 
     public static class SLong {
         public final int hi;
         public final int lo;
-        public final long v;
+        final long v;
         public SLong(ByteBuffer b) {
             b.rewind();
             v = b.getLong();
@@ -251,23 +255,23 @@ public class BuffParser {
         }
     }
 
-    public static class RrsInt {
-        public int len;
-        public int val;
-        public RrsInt(int len, int val) {
+    static class RrsInt {
+        int len;
+        int val;
+        RrsInt(int len, int val) {
             this.len = len;
             this.val = val;
         }
     }
 
-    public static class SString {
-        public int len;
-        public String s;
-        public SString(int len, String s) {
+    static class SString {
+        int len;
+        String s;
+        SString(int len, String s) {
             this.len = len;
             this.s = s;
         }
-        public byte[] toBuff() {
+        byte[] toBuff() {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             try {
                 bos.write(Utils.fromInt32(len));
