@@ -52,8 +52,9 @@ public class Pinocchio {
                 }
 
                 BaseCommand baseCommand = CommandsHandler.getCommand(input);
-                baseCommand.parseOptions(input);
+
                 if (baseCommand != null) {
+                    baseCommand.parseOptions(input);
                     baseCommand.init(this);
                 }
 

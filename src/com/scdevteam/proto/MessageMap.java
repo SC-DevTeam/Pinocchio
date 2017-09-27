@@ -326,7 +326,7 @@ public class MessageMap {
         }
     }
 
-    public static String getMap(GameMapper gameMapper, int msgId, byte[] wht) {
+    public static MapResult getMap(GameMapper gameMapper, int msgId, byte[] wht) {
         Mapper map = gameMapper.getMap(msgId);
         if (map != null) {
             BuffParser buffParser = new BuffParser(wht, 0);
@@ -338,13 +338,14 @@ public class MessageMap {
                 i++;
             }
 
+            String remainings = "";
             if (buffParser.hasRemaining()) {
                 byte[] rem = buffParser.remaining();
 
-                //WriterUtils.post("");
-                //WriterUtils.postInfo("REMAININGS HEX:\n" + Utils.hexDump(rem));
+                remainings = Utils.hexDump(rem);
             }
-            return r.toString();
+
+            return new MapResult(r.toString(), remainings);
         }
 
         return null;
@@ -355,7 +356,14 @@ public class MessageMap {
                                          boolean sub) {
         String n = mapPoint.getName(index);
         if (mapPoint.getMapValue() != Mapper.MapValueType.COMPONENT) {
-            r.append(WriterUtils.buildGreenBold(n)).append("\n");
+            if (!sub) {
+                r.append(WriterUtils.buildGreenBold(n)).append("\n");
+            } else {
+                r.append("[")
+                        .append(WriterUtils.buildCyanBold("*"))
+                        .append("] ")
+                        .append(WriterUtils.buildYellowBold(n)).append("\n");
+            }
         }
 
         ByteBuffer clone = buffParser.cloneBuffer();
@@ -393,11 +401,18 @@ public class MessageMap {
                             .append(" (")
                             .append(len)
                             .append(")")
-                            .append("\n");
+                            .append("\n\n");
 
                     for (int k = 0; k < len; k++) {
-                        for (Mapper.MapPoint mp : mapPoint.getComponent().getMapPoints()) {
-                            populateMapPoint(mp, r, buffParser, k + 1, true);
+                        int mapLength = mapPoint.getComponent().getMapPoints().length;
+                        for (int j=0;j<mapLength;j++) {
+                            populateMapPoint(mapPoint.getComponent().getMapPoints()[j],
+                                    r, buffParser, j + 1, true);
+
+                            if (j == mapLength - 1) {
+                                r.append("----------------")
+                                        .append("\n\n");
+                            }
                         }
                     }
                     break;
@@ -473,4 +488,20 @@ public class MessageMap {
         }
     }
 
+    public static class MapResult {
+        private final String mResult;
+        private final String mRemainings;
+        public MapResult(String result, String remainings) {
+            mResult = result;
+            mRemainings = remainings;
+        }
+
+        public String getResult() {
+            return mResult;
+        }
+
+        public String getRemainings() {
+            return mRemainings;
+        }
+    }
 }

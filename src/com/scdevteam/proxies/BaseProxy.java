@@ -72,7 +72,7 @@ public abstract class BaseProxy extends Base {
 
                     responseMessage.finish(payload, mSodium);
 
-                    String map = MessageMap.getMap(mMapper, responseMessage.getMessageID(),
+                    MessageMap.MapResult mapResult = MessageMap.getMap(mMapper, responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
                     WriterUtils.postAwesome("[" + WriterUtils.buildYellowBold("CLIENT") + "] " +
@@ -82,9 +82,14 @@ public abstract class BaseProxy extends Base {
                         WriterUtils.post(Utils.hexDump(responseMessage.getDecryptedPayload()));
                     }
 
-                    if (map != null) {
+                    if (mapResult != null) {
                         WriterUtils.post("");
-                        WriterUtils.post(map);
+                        WriterUtils.post(mapResult.getResult());
+
+                        if (!mapResult.getRemainings().isEmpty() && options.haveOption("rem")) {
+                            WriterUtils.post("");
+                            WriterUtils.post(mapResult.getRemainings());
+                        }
                     }
                     WriterUtils.post("");
 

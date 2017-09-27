@@ -83,7 +83,7 @@ public abstract class BaseClient implements Runnable {
                             MessageMap.getMessageType(responseMessage.getMessageID()) +
                             " (" + responseMessage.getMessageID() + ")");
 
-                    String map = MessageMap.getMap(mProxy.getMapper(),
+                    MessageMap.MapResult mapResult = MessageMap.getMap(mProxy.getMapper(),
                             responseMessage.getMessageID(),
                             responseMessage.getDecryptedPayload());
 
@@ -91,9 +91,14 @@ public abstract class BaseClient implements Runnable {
                         WriterUtils.post(Utils.hexDump(responseMessage.getDecryptedPayload()));
                     }
 
-                    if (map != null) {
+                    if (mapResult != null) {
                         WriterUtils.post("");
-                        WriterUtils.post(map);
+                        WriterUtils.post(mapResult.getResult());
+
+                        if (!mapResult.getRemainings().isEmpty() && mOptions.haveOption("rem")) {
+                            WriterUtils.post("");
+                            WriterUtils.post(mapResult.getRemainings());
+                        }
                     }
                     WriterUtils.post("");
 

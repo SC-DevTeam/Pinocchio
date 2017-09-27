@@ -1,6 +1,7 @@
 package com.scdevteam.messages.cr.server;
 
 import com.scdevteam.messages.cr.components.CardListComponent;
+import com.scdevteam.messages.cr.components.UnknownComponent;
 import com.scdevteam.proto.Mapper;
 import com.scdevteam.messages.cr.components.DeckComponent;
 
@@ -19,7 +20,11 @@ public class OwnHomeData extends Mapper {
                 new MapPoint("Current Deck", new CardListComponent(), ComponentLength.FIXED(8)),
                 new MapPoint(MapValueType.BYTE),
                 new MapPoint("Unused Cards", new CardListComponent(), ComponentLength.RRSINT32()),
-                new MapPoint("Last Deck Update", MapValueType.RRSINT32)
+                new MapPoint("Last Deck Update", MapValueType.RRSINT32),
+                new MapPoint(MapValueType.BYTE),
+                new MapPoint(MapValueType.BYTE),
+                new MapPoint(MapValueType.BYTE),
+                new MapPoint("Unknown Component", new UnknownComponent(), ComponentLength.FIXED(8)),
         };
     }
 }
