@@ -10,7 +10,7 @@ public class ClashOfClansClient extends BaseClient  {
 
     @Override
     public String getKey() {
-        return "7eb15f65bdd576619abbd0b0650c45db1020f5ec969fcf48a828424f1bc8d809";
+        return "ac69c8fd97bc0b2cd23b7a55e943d7e2c96fc31986fb8f968ae9ca9b1ded1d5e";
     }
 
     @Override

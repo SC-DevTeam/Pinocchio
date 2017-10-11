@@ -19,6 +19,6 @@ public class ClashOfClansProxy extends BaseProxy {
 
     @Override
     public String getMagicKey() {
-        return "56b577a8996f52c388981942811c6e9b8d39dc3e281f1ce0c047a3d8e55cb222";
+        return "E41D6D2C897136C57E6CE4AF7ABF951CFD4022394F7125FEFDFDAA794437255D";
     }
 }

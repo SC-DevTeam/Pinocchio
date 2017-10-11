@@ -86,7 +86,7 @@ public class Patchers extends BaseCommand {
 
             boolean success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
             if (success) {
-                ddPatch(5324832);
+                ddPatch(5156872); // 2.0.0 key
 
                 if (getOptions().haveOption("tv")) {
                     WriterUtils.postInfo("Patching TV Royale...");
@@ -107,21 +107,14 @@ public class Patchers extends BaseCommand {
         String gamePackage = "com.supercell.clashofclans";
 
         if (pullLib(gamePackage, gameName)) {
-            WriterUtils.postInfo("Patching server key...");
-
-            boolean success = writePayload(Utils.hexToBuffer("72f1a4a4c48e44da0c42310f800e96624e6dc6a641a9d41c3b5039d8dfadc27e"));
+            WriterUtils.postInfo("Patching magic key...");
+            boolean success = writePayload(Utils.hexToBuffer("FC68"));
             if (success) {
-                ddPatch(5754928);
-
-                WriterUtils.postInfo("Patching magic key...");
-                success = writePayload(Utils.hexToBuffer("14"));
-                if (success) {
-                    ddPatch(4248312);
-                    ddPatch(4251436);
-                }
-
-                finalizePatch(gameName, gamePackage);
+                ddPatch(939082); // login
+                ddPatch(941046); // others
             }
+
+            finalizePatch(gameName, gamePackage);
         }
     }
 
