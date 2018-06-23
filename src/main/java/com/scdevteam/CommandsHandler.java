@@ -1,7 +1,7 @@
 package com.scdevteam;
 
 import com.scdevteam.commands.*;
-import org.jetbrains.annotations.Nullable;
+import com.sun.istack.internal.Nullable;
 
 class CommandsHandler {
 

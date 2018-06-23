@@ -26,8 +26,11 @@ It's built with vanilla java, with all the boilerplates to allow an easy underst
 * Port all the messages from the know ones to Pinocchio java mapper
 
 # How to start
+
+You need git and maven installed:
+
 ```
-wget https://github.com/SC-DevTeam/Pinocchio/raw/master/Pinocchio.jar
-java -jar Pinocchio.jar
+git clone https://github.com/alphazero/Blake2b.git && cd blake2b && mvn install && cd ..
+git clone https://github.com/SC-DevTeam/Pinocchio.git && cd Pinocchio && mvn exec:java -Dexec.mainClass="com.scdevteam.Main"
 $> help
 ```
